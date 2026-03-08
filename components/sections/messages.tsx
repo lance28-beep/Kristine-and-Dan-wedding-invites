@@ -67,7 +67,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
 
     try {
       await fetch(
-        "https://docs.google.com/forms/d/e/1FAIpQLSfqfIjPgJHiNXd4TrquyCtFtMNG0WrlsyLGQ9EQuJbbxhWV4Q/formResponse",
+        "https://docs.google.com/forms/d/e/1FAIpQLScwT5_17mT2sVnEZOa43FJnQYcEaokkJEHcDY1UnY43buqSJg/formResponse",
         {
           method: "POST",
           mode: "no-cors",
@@ -176,7 +176,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                   style={{
                     backgroundColor: "rgba(250,247,242,0.9)",
                     borderColor: focusedField === 'name' ? GOLD.main : GOLD.rgba(0.35),
-                    color: GOLD.main,
+                    color: "#0C2650",
                   }}
                 />
                 {nameValue && (
@@ -218,7 +218,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
                   style={{
                     backgroundColor: "rgba(250,247,242,0.9)",
                     borderColor: focusedField === 'message' ? GOLD.main : GOLD.rgba(0.35),
-                    color: GOLD.main,
+                    color: "#0C2650",
                   }}
                 />
                 {messageValue && (
