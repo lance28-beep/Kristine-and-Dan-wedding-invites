@@ -1,25 +1,37 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 
+// Navy wedding palette - matches Hero section & LoadingScreen
+const COLORS = {
+  primaryNavy: '#0C2650',
+  deepRoyalBlue: '#072142',
+  accentBlue: '#08467F',
+  softChampagne: '#F5E6D3',
+  warmIvory: '#FAF7F2',
+  mutedGold: '#C6A85E',
+  softBlush: '#E8CFCF',
+  warmWhite: 'rgba(250, 247, 242, 0.95)',
+} as const;
+
 interface HeroProps {
   onOpen: () => void;
   visible: boolean;
 }
 
 const desktopImages: string[] = [
-  '/desktop-background/couple (1).jpg',
-  '/desktop-background/couple (2).jpg',
-  '/desktop-background/couple (3).jpg',
-  '/desktop-background/couple (4).jpg',
-  '/desktop-background/couple (5).jpg',
+  '/desktop-background/couple (1).webp',
+  '/desktop-background/couple (2).webp',
+  '/desktop-background/couple (3).webp',
+  '/desktop-background/couple (4).webp',
+  '/desktop-background/couple (5).webp',
 ];
 
 const mobileImages: string[] = [
-  '/mobile-background/couple (1).jpg',
-  '/mobile-background/couple (2).jpg',
-  '/mobile-background/couple (3).jpg',
-  '/mobile-background/couple (4).jpg',
-  '/mobile-background/couple (5).jpg',
+  '/mobile-background/couple (1).webp',
+  '/mobile-background/couple (2).webp',
+  '/mobile-background/couple (3).webp',
+  '/mobile-background/couple (4).webp',
+  '/mobile-background/couple (5).webp',
 ];
 
 export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
@@ -101,19 +113,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
           </div>
         ))}
         
-        {/* Gradient Overlay */}
-        <div 
+        {/* Navy gradient overlays - elegant depth */}
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'linear-gradient(to bottom, rgba(239, 210, 170, 0.5), rgba(239, 210, 170, 0.7))'
+            background: `linear-gradient(to bottom, ${COLORS.deepRoyalBlue}88 0%, ${COLORS.primaryNavy}66 30%, transparent 55%), linear-gradient(to top, ${COLORS.deepRoyalBlue}cc 0%, ${COLORS.primaryNavy}99 40%, transparent 70%)`,
           }}
         />
-        
-        {/* Subtle vignette effect */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
+        {/* Soft champagne glow - romantic ambient light */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-50"
           style={{
-            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(239, 210, 170, 0.3) 100%)'
+            background: `radial-gradient(ellipse 70% 50% at 50% 50%, ${COLORS.softChampagne}30, transparent 55%), radial-gradient(ellipse at center, transparent 30%, ${COLORS.deepRoyalBlue}50 100%)`,
           }}
         />
       </div>
@@ -136,15 +147,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
               }}
             >
               <Image
-                src="/monogram/monogram.png"
-                alt="Monogram"
+                src="/monogram/monogram_couple.png"
+                alt="Dan & Kristine monogram"
                 fill
                 className="object-contain drop-shadow-lg"
                 priority
                 style={{
-                  // White with glow #FBCCC9
                   filter:
-                    'brightness(0) invert(1) drop-shadow(0 0 5px #FBCCC9) drop-shadow(0 0 10px #FBCCC9)',
+                    `brightness(0) invert(1) drop-shadow(0 0 6px ${COLORS.softChampagne}) drop-shadow(0 0 12px ${COLORS.mutedGold})`,
                 }}
               />
             </div>
@@ -154,6 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
         <div className="flex-1" />
 
         <div className="flex flex-col items-center justify-end w-full gap-5 sm:gap-6 pb-14 sm:pb-16 md:pb-20">
+          {/* "You are" - font style unchanged (Great Vibes) */}
           <h2
             className={`text-6xl md:text-8xl transform -rotate-6 transition-all duration-1000 ease-out delay-200 ${
               contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -161,13 +172,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
             style={{
               fontFamily: '"Great Vibes", cursive',
               fontWeight: 400,
-              color: '#FFFFFF',
-              textShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9',
+              color: COLORS.softChampagne,
+              textShadow: `0 0 10px ${COLORS.softChampagne}, 0 0 20px ${COLORS.mutedGold}60`,
             }}
           >
             You are
           </h2>
           
+          {/* "Invited!" - font style unchanged (Cinzel) */}
           <h1
             className={`text-5xl md:text-7xl font-bold tracking-wider uppercase transition-all duration-1000 ease-out delay-300 ${
               contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -175,39 +187,40 @@ export const Hero: React.FC<HeroProps> = ({ onOpen, visible }) => {
             style={{
               fontFamily: '"Cinzel", serif',
               fontWeight: 700,
-              color: '#FFFFFF',
-              textShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9',
+              color: COLORS.softChampagne,
+              textShadow: `0 0 10px ${COLORS.softChampagne}, 0 0 20px ${COLORS.mutedGold}60`,
               letterSpacing: '0.05em',
             }}
           >
             Invited!
           </h1>
 
-          <button 
-            onClick={() => {
-              onOpen();
-            }}
+          <button
+            onClick={() => onOpen()}
             className={`px-10 py-4 font-serif text-sm tracking-[0.2em] uppercase rounded-sm border transition-all duration-500 ease-out delay-500 shadow-lg hover:shadow-xl ${
               contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
             style={{
-              backgroundColor: '#C44569',
-              borderColor: '#C44569',
-              color: '#FFFFFF',
+              backgroundColor: COLORS.mutedGold,
+              borderColor: COLORS.mutedGold,
+              color: COLORS.primaryNavy,
+              boxShadow: `0 8px 24px ${COLORS.mutedGold}50`,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#D65D7D';
+              e.currentTarget.style.backgroundColor = '#D4B96A';
               e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.borderColor = '#D65D7D';
+              e.currentTarget.style.borderColor = '#D4B96A';
+              e.currentTarget.style.boxShadow = `0 12px 28px ${COLORS.mutedGold}60`;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#C44569';
+              e.currentTarget.style.backgroundColor = COLORS.mutedGold;
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#C44569';
+              e.currentTarget.style.borderColor = COLORS.mutedGold;
+              e.currentTarget.style.boxShadow = `0 8px 24px ${COLORS.mutedGold}50`;
             }}
           >
             <span
-              style={{ fontFamily: '"Cinzel", serif', fontWeight: 600, color: '#FFFFFF' }}
+              style={{ fontFamily: '"Cinzel", serif', fontWeight: 600, color: COLORS.primaryNavy }}
             >
               Open Invitation
             </span>

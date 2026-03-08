@@ -3,20 +3,20 @@
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
-import { Section } from "@/components/section"
 import { bequta } from "@/app/fonts"
-// Removed circular gallery in favor of a responsive masonry layout
+
+const GOLD = { main: "#E7D981", rgba: (a: number) => `rgba(231, 217, 129, ${a})` }
 
 const galleryItems = [
-  { image: "/mobile-background/couple (4).jpg", text: " " },   
-  { image: "/mobile-background/couple (1).jpg", text: " " },
-  { image: "/mobile-background/couple (5).jpg", text: " " },
-  { image: "/mobile-background/couple (6).jpg", text: " " },
-  { image: "/mobile-background/couple (7).jpg", text: " " },
-  { image: "/mobile-background/couple (2).jpg", text: " " },
-  { image: "/mobile-background/couple (3).jpg", text: " " },
-  { image: "/mobile-background/couple (8).jpg", text: " " },
-  { image: "/mobile-background/couple (9).jpg", text: " " },
+  { image: "/mobile-background/couple (4).webp", text: " " },   
+  { image: "/mobile-background/couple (1).webp", text: " " },
+  { image: "/mobile-background/couple (5).webp", text: " " },
+  { image: "/mobile-background/couple (6).webp", text: " " },
+  { image: "/mobile-background/couple (7).webp", text: " " },
+  { image: "/mobile-background/couple (2).webp", text: " " },
+  { image: "/mobile-background/couple (3).webp", text: " " },
+  { image: "/mobile-background/couple (8).webp", text: " " },
+  { image: "/mobile-background/couple (9).webp", text: " " },
 ]
 
 export function Gallery() {
@@ -94,76 +94,27 @@ export function Gallery() {
   }
 
   return (
-    <Section
-      id="gallery"
-      className="relative py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden"
-    >
-      {/* Semi-transparent overlay for better text readability */}
-      <div className="absolute inset-0 bg-[#FFF7F6] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#FBCCC9_0%,_transparent_40%)] opacity-70 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_#FBCCC9_0%,_transparent_40%)] opacity-70 pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none" />
+    <section id="gallery" className="relative w-full pt-0 pb-16 sm:pb-20 md:pb-24 lg:pb-28 overflow-hidden px-0">
+      <div
+        className="relative w-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden rounded-none"
+        style={{ backgroundColor: GOLD.rgba(0.1), backdropFilter: "blur(10px)" }}
+      >
+        <div className="absolute inset-3 md:inset-6 border pointer-events-none rounded-sm" style={{ borderColor: GOLD.rgba(0.3) }} />
+        <div className="absolute inset-4 md:inset-7 border-2 pointer-events-none rounded-sm" style={{ borderColor: GOLD.rgba(0.5) }} />
 
-      {/* Flower decoration - top left corner */}
-      <div className="absolute left-0 top-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-y-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Flower decoration - top right corner */}
-      <div className="absolute right-0 top-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1] scale-y-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Flower decoration - left bottom corner */}
-      <div className="absolute left-0 bottom-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-      
-      {/* Flower decoration - right bottom corner */}
-      <div className="absolute right-0 bottom-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
+        <div className="relative z-20">
       {/* Header */}
-      <div className="relative z-10 text-center mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6">
+      <div className="relative z-10 text-center mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6">
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#C44569] to-transparent" />
+          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#E7D981] to-transparent" />
         </div>
-        <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl ${bequta.className} font-normal text-[#C44569] mb-6 sm:mb-8 uppercase tracking-[0.12em] sm:tracking-[0.15em] elegant-text-shadow`}>
+        <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl ${bequta.className} font-normal mb-6 sm:mb-8 uppercase tracking-[0.12em] sm:tracking-[0.15em] elegant-text-shadow`} style={{ color: GOLD.main }}>
           Our Moments
         </h2>
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#C44569] to-transparent" />
+          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#E7D981] to-transparent" />
         </div>
-        <p className="text-base sm:text-lg md:text-xl font-[family-name:var(--font-crimson)] text-[#C44569] font-light max-w-xl mx-auto leading-relaxed tracking-wide px-4">
+        <p className="text-base sm:text-lg md:text-xl font-[family-name:var(--font-crimson)] font-light max-w-xl mx-auto leading-relaxed tracking-wide px-4" style={{ color: GOLD.main }}>
           Every moment, a treasured memory made eternal
         </p>
       </div>
@@ -174,7 +125,7 @@ export function Gallery() {
           <div className="max-w-6xl w-full">
             {isLoading ? (
               <div className="flex items-center justify-center h-64 sm:h-80 md:h-96">
-                <div className="w-12 h-12 border-[3px] border-[#C44569]/30 border-t-[#C44569] rounded-full animate-spin" />
+                <div className="w-12 h-12 border-[3px] border-[#E7D981]/30 border-t-[#E7D981] rounded-full animate-spin" />
               </div>
             ) : (
               <>
@@ -188,7 +139,7 @@ export function Gallery() {
                       <button
                         key={item.image + index}
                         type="button"
-                        className="group relative snap-center shrink-0 w-[82%] overflow-hidden rounded-lg bg-white/80 backdrop-blur-sm border border-[#C44569]/20 shadow-lg active:shadow-xl active:border-[#C44569]/60 transition-all duration-300"
+                        className="group relative snap-center shrink-0 w-[82%] overflow-hidden rounded-lg bg-white/80 backdrop-blur-sm border border-[#E7D981]/20 shadow-lg active:shadow-xl active:border-[#E7D981]/60 transition-all duration-300"
                         onClick={() => {
                           setSelectedImage(item)
                           setCurrentIndex(index)
@@ -196,7 +147,7 @@ export function Gallery() {
                         aria-label={`Open image ${index + 1}`}
                       >
                         {/* Subtle glow on active (mobile) */}
-                        <div className="absolute -inset-0.5 bg-gradient-to-br from-[#C44569]/15 to-[#C44569]/5 rounded-lg opacity-0 group-active:opacity-100 transition-opacity duration-300 blur-sm" />
+                        <div className="absolute -inset-0.5 bg-gradient-to-br from-[#E7D981]/15 to-[#E7D981]/5 rounded-lg opacity-0 group-active:opacity-100 transition-opacity duration-300 blur-sm" />
 
                         <div className="relative aspect-[3/4] overflow-hidden">
                           <img
@@ -210,7 +161,7 @@ export function Gallery() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300" />
                         </div>
 
-                        <div className="absolute top-2 right-2 bg-[#C44569]/60 backdrop-blur-sm rounded-full px-2 py-1">
+                        <div className="absolute top-2 right-2 bg-[#E7D981]/60 backdrop-blur-sm rounded-full px-2 py-1">
                           <span className="text-xs font-medium text-white">
                             {index + 1}/{galleryItems.length}
                           </span>
@@ -219,7 +170,7 @@ export function Gallery() {
                     ))}
                   </div>
 
-                  <p className="mt-2 text-center text-xs font-[family-name:var(--font-crimson)] text-[#C44569] tracking-wide">
+                  <p className="mt-2 text-center text-xs font-[family-name:var(--font-crimson)] text-[#E7D981] tracking-wide">
                     Swipe to slide
                   </p>
                 </div>
@@ -230,7 +181,7 @@ export function Gallery() {
                     <button
                       key={item.image + index}
                       type="button"
-                      className="group relative w-full overflow-hidden rounded-xl bg-white/80 backdrop-blur-sm border border-[#C44569]/20 shadow-lg hover:shadow-xl hover:border-[#C44569]/60 transition-all duration-300"
+                      className="group relative w-full overflow-hidden rounded-xl bg-white/80 backdrop-blur-sm border border-[#E7D981]/20 shadow-lg hover:shadow-xl hover:border-[#E7D981]/60 transition-all duration-300"
                       onClick={() => {
                         setSelectedImage(item)
                         setCurrentIndex(index)
@@ -238,7 +189,7 @@ export function Gallery() {
                       aria-label={`Open image ${index + 1}`}
                     >
                       {/* Subtle glow on hover */}
-                      <div className="absolute -inset-0.5 bg-gradient-to-br from-[#C44569]/15 to-[#C44569]/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                      <div className="absolute -inset-0.5 bg-gradient-to-br from-[#E7D981]/15 to-[#E7D981]/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
 
                       <div className="relative aspect-[3/4] md:aspect-square overflow-hidden">
                         <img
@@ -254,7 +205,7 @@ export function Gallery() {
                       </div>
 
                       {/* Image counter badge */}
-                      <div className="absolute top-2 right-2 bg-[#C44569]/60 backdrop-blur-sm rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute top-2 right-2 bg-[#E7D981]/60 backdrop-blur-sm rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <span className="text-xs font-medium text-white">
                           {index + 1}/{galleryItems.length}
                         </span>
@@ -267,10 +218,10 @@ export function Gallery() {
 
             {/* View more */}
             {!isLoading && (
-              <div className="mt-10 sm:mt-12 flex justify-center">
+              <div className="mt-14 sm:mt-16 md:mt-20 mb-8 sm:mb-10 md:mb-12 flex justify-center">
                 <Link
                   href="/gallery"
-                  className="inline-flex items-center justify-center rounded-full px-7 py-3 text-sm sm:text-base font-[family-name:var(--font-cinzel)] font-normal tracking-[0.16em] bg-[#C44569] text-white border-2 border-[#C44569] shadow-md hover:shadow-lg hover:bg-[#C44569]/90 hover:border-[#C44569]/90 transition-all duration-200 uppercase"
+                  className="inline-flex items-center justify-center rounded-full px-7 py-3 text-sm sm:text-base font-[family-name:var(--font-cinzel)] font-normal tracking-[0.16em] bg-[#E7D981] text-white border-2 border-[#E7D981] shadow-md hover:shadow-lg hover:bg-[#E7D981]/90 hover:border-[#E7D981]/90 transition-all duration-200 uppercase"
                 >
                   View more
                 </Link>
@@ -436,6 +387,8 @@ export function Gallery() {
           </div>
         </div>
       )}
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }

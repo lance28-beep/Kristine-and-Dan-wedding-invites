@@ -11,6 +11,12 @@ const cormorant = Cormorant_Garamond({
   weight: ["400", "500", "600"],
 })
 
+// Matches Welcome / messages gold accent
+const GOLD = {
+  main: "#E7D981",
+  rgba: (a: number) => `rgba(231, 217, 129, ${a})`,
+}
+
 interface Message {
   timestamp: string
   name: string
@@ -44,22 +50,22 @@ export default function MessageWallDisplay({ messages, loading }: MessageWallDis
     return (
       <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="shadow-lg bg-transparent backdrop-blur-md rounded-xl sm:rounded-2xl">
+          <Card key={i} className="shadow-lg backdrop-blur-md rounded-xl sm:rounded-2xl border-2" style={{ backgroundColor: GOLD.rgba(0.06), borderColor: GOLD.rgba(0.2) }}>
             <CardContent className="p-2.5 sm:p-3 md:p-4 lg:p-5">
               <div className="flex justify-between items-start mb-2 sm:mb-3 md:mb-4">
                 <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
-                  <Skeleton className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#C44569]/20 via-[#C44569]/14 to-[#C44569]/12" />
+                  <Skeleton className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full" style={{ backgroundColor: GOLD.rgba(0.2) }} />
                   <div className="space-y-1.5 sm:space-y-2">
-                    <Skeleton className="h-3 w-20 sm:w-24 md:w-32 bg-[#C44569]/18" />
-                    <Skeleton className="h-2.5 w-16 sm:w-20 md:w-24 bg-[#C44569]/12" />
+                    <Skeleton className="h-3 w-20 sm:w-24 md:w-32" style={{ backgroundColor: GOLD.rgba(0.18) }} />
+                    <Skeleton className="h-2.5 w-16 sm:w-20 md:w-24" style={{ backgroundColor: GOLD.rgba(0.12) }} />
                   </div>
                 </div>
                 <div className="flex gap-1.5 sm:gap-2">
-                  <Skeleton className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-[#C44569]/14" />
-                  <Skeleton className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded bg-[#C44569]/10" />
+                  <Skeleton className="w-3 h-3 sm:w-4 sm:h-4 rounded" style={{ backgroundColor: GOLD.rgba(0.14) }} />
+                  <Skeleton className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded" style={{ backgroundColor: GOLD.rgba(0.1) }} />
                 </div>
               </div>
-              <Skeleton className="h-12 sm:h-14 md:h-16 w-full bg-gradient-to-r from-[#C44569]/10 via-[#C44569]/8 to-[#C44569]/10 rounded-lg" />
+              <Skeleton className="h-12 sm:h-14 md:h-16 w-full rounded-lg" style={{ backgroundColor: GOLD.rgba(0.1) }} />
             </CardContent>
           </Card>
         ))}
@@ -71,27 +77,25 @@ export default function MessageWallDisplay({ messages, loading }: MessageWallDis
     return (
       <div className="text-center py-6 sm:py-10 md:py-14 lg:py-16 xl:py-20 px-2 sm:px-4">
         <div className="relative inline-block mb-4 sm:mb-5 md:mb-6 lg:mb-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#C44569]/18 to-[#C44569]/12 rounded-full blur-xl scale-150 animate-pulse-slow" />
-          <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 bg-gradient-to-br from-[#C44569] via-[#C44569] to-[#C44569] rounded-full flex items-center justify-center mx-auto shadow-lg">
-            <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10 text-[#FFF7F6]" />
+          <div className="absolute inset-0 rounded-full blur-xl scale-150 animate-pulse-slow" style={{ backgroundColor: GOLD.rgba(0.2) }} />
+          <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto shadow-lg" style={{ backgroundColor: GOLD.main }}>
+            <MessageCircle className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-10 lg:w-10 text-[#0C2650]" />
           </div>
-          {/* Outer decorative rings */}
-          <div className="absolute -inset-2 sm:-inset-3 rounded-full border-2 border-[#C44569]/18 animate-ping"></div>
-          <div className="absolute -inset-1.5 sm:-inset-2 rounded-full border border-[#C44569]/25"></div>
+          <div className="absolute -inset-2 sm:-inset-3 rounded-full border-2 animate-ping opacity-30" style={{ borderColor: GOLD.rgba(0.3) }} />
         </div>
-        <h3 className={`${cormorant.className} text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 sm:mb-3 md:mb-4`}>
+        <h3 className={`${cormorant.className} text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 md:mb-4`} style={{ color: GOLD.main }}>
           No Messages Yet
         </h3>
-        <p className={`${cormorant.className} text-xs sm:text-sm md:text-base lg:text-lg text-white max-w-md mx-auto leading-relaxed mb-4 sm:mb-5 md:mb-6`}>
+        <p className={`${cormorant.className} text-xs sm:text-sm md:text-base lg:text-lg max-w-md mx-auto leading-relaxed mb-4 sm:mb-5 md:mb-6`} style={{ color: GOLD.main }}>
           Be the first to share your heartfelt wishes for the happy couple!
         </p>
-          <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-8 flex justify-center">
-            <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/30">
-              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-white animate-pulse" />
-              <span className={`${cormorant.className} text-[10px] sm:text-xs md:text-sm text-white`}>Your message will appear here</span>
-              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-white animate-pulse" style={{ animationDelay: '0.5s' }} />
-            </div>
+        <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-8 flex justify-center">
+          <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 backdrop-blur-sm rounded-full border" style={{ backgroundColor: GOLD.rgba(0.1), borderColor: GOLD.rgba(0.3) }}>
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 animate-pulse" style={{ color: GOLD.main }} />
+            <span className={`${cormorant.className} text-[10px] sm:text-xs md:text-sm`} style={{ color: GOLD.main }}>Your message will appear here</span>
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 animate-pulse" style={{ color: GOLD.main, animationDelay: "0.5s" }} />
           </div>
+        </div>
       </div>
     )
   }
@@ -101,56 +105,49 @@ export default function MessageWallDisplay({ messages, loading }: MessageWallDis
       {visibleMessages.map((msg, index) => (
         <Card
           key={index}
-          className={`relative shadow-lg bg-[#FFF7F6] backdrop-blur-md hover:shadow-2xl transition-all duration-500 group overflow-hidden transform rounded-xl sm:rounded-2xl hover:scale-[1.01] ${
-            isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+          className={`relative shadow-lg backdrop-blur-md hover:shadow-xl transition-all duration-500 group overflow-hidden transform rounded-xl sm:rounded-2xl hover:scale-[1.01] border-2 ${
+            isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
           }`}
           style={{
             transitionDelay: `${index * 100}ms`,
-            animation: isAnimating ? 'none' : 'fadeInUp 0.6s ease-out forwards',
-            boxShadow: '0 4px 18px rgba(128,10,6,0.18), 0 2px 8px rgba(128,10,6,0.12)'
+            animation: isAnimating ? "none" : "fadeInUp 0.6s ease-out forwards",
+            backgroundColor: GOLD.rgba(0.08),
+            borderColor: GOLD.rgba(0.25),
+            boxShadow: "0 4px 18px rgba(0,0,0,0.1)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 8px 26px rgba(128,10,6,0.24), 0 4px 12px rgba(128,10,6,0.16)';
+            e.currentTarget.style.boxShadow = `0 8px 26px ${GOLD.rgba(0.2)}`;
+            e.currentTarget.style.borderColor = GOLD.rgba(0.4);
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 4px 18px rgba(128,10,6,0.18), 0 2px 8px rgba(128,10,6,0.12)';
+            e.currentTarget.style.boxShadow = "0 4px 18px rgba(0,0,0,0.1)";
+            e.currentTarget.style.borderColor = GOLD.rgba(0.25);
           }}
         >
-          {/* Enhanced card background effects */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#C44569]/10 via-transparent to-white/10 opacity-70 group-hover:opacity-95 transition-opacity duration-300" />
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#C44569]/40 via-[#C44569]/45 to-[#C44569]/40 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-          <div className="absolute -inset-[1px] rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: 'inset 0 0 0 1px rgba(128, 10, 6, 0.18)' }} />
-          
-          {/* Subtle shimmer effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/18 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-          
-          {/* Simple inner border */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-70 group-hover:opacity-95 transition-opacity duration-300" />
+          <div className="absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" style={{ background: `linear-gradient(90deg, ${GOLD.rgba(0.4)}, ${GOLD.main}, ${GOLD.rgba(0.4)})` }} />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           <div className="absolute inset-2 sm:inset-3 rounded-xl pointer-events-none">
-            <div className="absolute inset-0 rounded-xl border border-[#C44569]/12 group-hover:border-[#C44569]/25 transition-colors duration-300" />
+            <div className="absolute inset-0 rounded-xl border transition-colors duration-300 group-hover:border-opacity-100" style={{ borderColor: GOLD.rgba(0.25) }} />
           </div>
           
           <CardContent className="relative p-2 sm:p-2.5 md:p-3 lg:p-3.5">
             <div className="flex justify-between items-start mb-1.5 sm:mb-2 md:mb-2.5">
               <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-2.5">
                 <div className="relative">
-                  <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 bg-[#C44569] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg ring-2 ring-white/50">
-                    <span className={`${cormorant.className} text-[#FFF7F6] text-xs sm:text-sm md:text-base font-semibold drop-shadow-sm`}>
-                      {msg.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()}
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg ring-2 ring-white/50" style={{ backgroundColor: GOLD.main }}>
+                    <span className={`${cormorant.className} text-xs sm:text-sm md:text-base font-semibold drop-shadow-sm`} style={{ color: "#0C2650" }}>
+                      {msg.name.split(" ").map((n) => n[0]).join("").toUpperCase()}
                     </span>
                   </div>
-                  {/* Subtle avatar glow */}
-                  <div className="absolute -inset-1 rounded-full bg-[#C44569]/18 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+                  <div className="absolute -inset-1 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" style={{ backgroundColor: GOLD.rgba(0.2) }} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-1 sm:gap-1.5">
-                    <h4 className={`${cormorant.className} text-[#C44569] text-xs sm:text-sm md:text-base font-semibold truncate group-hover:text-[#C44569] transition-colors duration-300`}>
+                    <h4 className={`${cormorant.className} text-xs sm:text-sm md:text-base font-semibold truncate transition-colors duration-300`} style={{ color: GOLD.main }}>
                       {msg.name}
                     </h4>
-                    <span className={`${cormorant.className} text-[9px] sm:text-[10px] md:text-xs text-[#C44569]/70 truncate`}>
+                    <span className={`${cormorant.className} text-[9px] sm:text-[10px] md:text-xs truncate`} style={{ color: GOLD.rgba(0.75) }}>
                       {new Date(msg.timestamp).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
@@ -163,42 +160,32 @@ export default function MessageWallDisplay({ messages, loading }: MessageWallDis
                 </div>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <Heart className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-[#C44569]/85 fill-[#C44569]/15 group-hover:fill-[#C44569]/30 group-hover:text-[#C44569] transition-all duration-300 group-hover:scale-110" />
-                <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 text-[#C44569]/85 group-hover:text-[#C44569] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                <Heart className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 transition-all duration-300 group-hover:scale-110" style={{ color: GOLD.main, fill: GOLD.rgba(0.2) }} />
+                <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" style={{ color: GOLD.main }} />
               </div>
             </div>
             
             <div className="relative pl-4 sm:pl-6 md:pl-8 pr-2 sm:pr-4 md:pr-6 py-2 sm:py-3">
-              {/* Decorative left quote mark */}
               <div className="absolute left-0 top-0 flex flex-col items-start">
-                <span className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#C44569]/20 leading-none group-hover:text-[#C44569]/30 transition-all duration-300 group-hover:scale-110`}>
-                  "
-                </span>
-                <div className="w-8 sm:w-10 md:w-12 h-0.5 bg-gradient-to-r from-[#C44569]/20 to-transparent mt-1 group-hover:from-[#C44569]/30 transition-all duration-300" />
+                <span className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none group-hover:scale-110 transition-all duration-300`} style={{ color: GOLD.rgba(0.25) }}>"</span>
+                <div className="w-8 sm:w-10 md:w-12 h-0.5 mt-1" style={{ background: `linear-gradient(90deg, ${GOLD.rgba(0.25)}, transparent)` }} />
               </div>
-              
-              {/* Message text with improved readability */}
-              <p className={`${cormorant.className} text-[#C44569] text-sm sm:text-base md:text-lg lg:text-lg leading-relaxed sm:leading-loose italic group-hover:text-[#C44569]/95 transition-colors duration-300 relative z-10`}>
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed sm:leading-loose italic transition-colors duration-300 relative z-10`} style={{ color: GOLD.main }}>
                 {msg.message}
               </p>
-              
-              {/* Decorative right quote mark */}
               <div className="absolute right-0 bottom-0 flex flex-col items-end">
-                <div className="w-8 sm:w-10 md:w-12 h-0.5 bg-gradient-to-l from-[#C44569]/20 to-transparent mb-1 group-hover:from-[#C44569]/30 transition-all duration-300" />
-                <span className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#C44569]/22 leading-none group-hover:text-[#C44569]/35 transition-all duration-300 group-hover:scale-110`}>
-                  "
-                </span>
+                <div className="w-8 sm:w-10 md:w-12 h-0.5 mb-1" style={{ background: `linear-gradient(90deg, transparent, ${GOLD.rgba(0.25)})` }} />
+                <span className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none group-hover:scale-110 transition-all duration-300`} style={{ color: GOLD.rgba(0.3) }}>"</span>
               </div>
             </div>
             
-              {/* Enhanced message bottom accent */}
             <div className="mt-1.5 sm:mt-2 md:mt-3 flex items-center justify-between">
-                <div className="flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px] text-[#C44569]/65">
-                  <div className="w-1 h-1 rounded-full bg-[#C44569]/80" />
-                  <div className="w-1 h-1 rounded-full bg-[#C44569]/80" />
-                  <div className="w-1 h-1 rounded-full bg-[#C44569]/80" />
+              <div className="flex items-center gap-0.5 sm:gap-1">
+                <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.8) }} />
+                <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.8) }} />
+                <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.8) }} />
               </div>
-                <div className="w-14 sm:w-16 h-0.5 bg-gradient-to-r from-transparent via-[#C44569]/55 to-transparent group-hover:via-[#C44569]/70 transition-all duration-300" />
+              <div className="w-14 sm:w-16 h-0.5" style={{ background: `linear-gradient(90deg, transparent, ${GOLD.rgba(0.5)}, transparent)` }} />
             </div>
           </CardContent>
         </Card>

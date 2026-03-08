@@ -2,8 +2,24 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
+import { Playfair_Display, Cormorant_Garamond, Cinzel } from 'next/font/google';
 import { siteConfig } from '@/content/site';
-import { bequta } from "@/app/fonts";
+
+// Navy wedding palette - matches Hero section
+const COLORS = {
+  primaryNavy: '#0C2650',
+  deepRoyalBlue: '#072142',
+  accentBlue: '#08467F',
+  softChampagne: '#F5E6D3',
+  warmIvory: '#FAF7F2',
+  mutedGold: '#C6A85E',
+  softBlush: '#E8CFCF',
+  warmWhite: 'rgba(250, 247, 242, 0.95)',
+} as const;
+
+const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'] });
+const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600'] });
+const cinzel = Cinzel({ subsets: ['latin'], weight: ['600', '700'] });
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -11,13 +27,13 @@ interface LoadingScreenProps {
 
 // Countdown boxes with color photos - numbers show days, hours, minutes
 const COUNTDOWN_BOXES = [
-  { src: '/gallery/couple3.jpg' },
-  { src: '/gallery/couple2.jpg' },
-  { src: '/gallery/couple1.jpg' },
+  { src: '/loadingimg/image1.jpg' },
+  { src: '/loadingimg/image2.jpg' },
+  { src: '/loadingimg/image3.jpg' },
 ];
 
-const MAIN_BW_IMAGE = '/mobile-background/couple (5).jpg';
-const MAIN_BW_DESKTOP = '/desktop-background/couple (5).jpg';
+const MAIN_BW_IMAGE = '/mobile-background/couple (5).webp';
+const MAIN_BW_DESKTOP = '/desktop-background/couple (5).webp';
 const STAGGER_DELAY_MS = 4000; // Each image appears every 4 seconds
 const BOX_TRANSITION_MS = 1200; // Slow, smooth transition
 const TOTAL_DURATION_MS = COUNTDOWN_BOXES.length * STAGGER_DELAY_MS + 3000;
@@ -39,9 +55,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Live countdown: days, hours, minutes until wedding (May 23, 2026, 9:30 AM)
+  // Live countdown: days, hours, minutes until wedding (May 23, 2026, 2:00 PM)
   const countdown = useMemo(() => {
-    const wedding = new Date('2026-05-23T09:30:00');
+    const wedding = new Date('2026-05-23T14:00:00');
     const diff = wedding.getTime() - now.getTime();
     if (diff <= 0) return { days: 0, hours: 0, minutes: 0 };
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -105,23 +121,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const hashtag = `#${siteConfig.couple.groomNickname}And${siteConfig.couple.brideNickname}`;
   const productionCredit = '';
 
-  // Palette tuned to requested hues
-  const palette = {
-    deep: '#BE8680',
-    medium: '#E7AA9D',
-    accent: '#DFAA98',
-    cream: '#F0DFCE',
-    soft: '#FFFFFF',
-  };
-
   return (
     <div
       className={`fixed inset-0 z-50 flex flex-col overflow-hidden transition-opacity duration-500 ${
         fadeOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      {/* Background image with overlay */}
-      <div className="absolute inset-0">
+      {/* Background image with navy overlay */}
+      <div className="absolute inset-0 bg-[#072142]">
         <Image
           src={isMobile ? MAIN_BW_IMAGE : MAIN_BW_DESKTOP}
           alt=""
@@ -130,19 +137,18 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           sizes="100vw"
           priority
         />
-        {/* Gradient overlay for readability and warmth */}
+        {/* Navy gradient overlays - elegant depth */}
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(180deg, ${palette.deep}40 0%, transparent 25%, transparent 75%, ${palette.deep}55 100%)`,
+            background: `linear-gradient(180deg, ${COLORS.deepRoyalBlue}ee 0%, ${COLORS.primaryNavy}88 20%, transparent 50%, transparent 80%, ${COLORS.deepRoyalBlue}dd 100%)`,
           }}
         />
-        {/* Additional color overlay */}
+        {/* Soft champagne glow - romantic ambient light */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-50"
           style={{
-            backgroundColor: '#FBCCC9',
-            opacity: 0.25,
+            background: `radial-gradient(ellipse 70% 40% at 50% 30%, ${COLORS.softChampagne}25, transparent 50%), radial-gradient(ellipse 80% 50% at 50% 85%, ${COLORS.softChampagne}30, transparent 55%)`,
           }}
         />
       </div>
@@ -154,47 +160,47 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
               <span
                 className="hidden sm:block h-px w-12 flex-shrink-0"
-                style={{ backgroundColor: palette.accent }}
+                style={{ backgroundColor: `${COLORS.softChampagne}77` }}
               />
               <p className="text-center">
                 <span
-                  className="inline-block text-[10px] sm:text-xs tracking-[0.28em] sm:tracking-[0.36em] font-[family-name:var(--font-crimson)] uppercase px-3 py-1.5 rounded-full backdrop-blur-sm border"
+                  className={`${cormorant.className} inline-block text-[10px] sm:text-xs tracking-[0.28em] sm:tracking-[0.36em] uppercase px-3 py-1.5 rounded-full backdrop-blur-sm border`}
                   style={{
-                  color: '#C44569',
-                  backgroundColor: `${palette.cream}DB`,
-                  borderColor: `${palette.deep}2E`,
-                  textShadow: '0 1px 0 rgba(255,255,255,0.7)',
-                }}
-              >
-                Your invitation is on its way
-              </span>
-            </p>
-            <span
-              className="hidden sm:block h-px w-12 flex-shrink-0"
-              style={{ backgroundColor: palette.accent }}
-            />
+                    color: COLORS.primaryNavy,
+                    backgroundColor: `${COLORS.softChampagne}E8`,
+                    borderColor: `${COLORS.mutedGold}66`,
+                    textShadow: `0 1px 2px ${COLORS.softChampagne}99`,
+                  }}
+                >
+                  Your invitation is on its way
+                </span>
+              </p>
+              <span
+                className="hidden sm:block h-px w-12 flex-shrink-0"
+                style={{ backgroundColor: `${COLORS.softChampagne}77` }}
+              />
           </div>
 
           <p className="text-center mb-4 sm:mb-5">
             <span
-              className="inline-block text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] font-[family-name:var(--font-crimson)] px-3 py-1.5 rounded-full backdrop-blur-sm border"
+              className={`${cormorant.className} inline-block text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] px-3 py-1.5 rounded-full backdrop-blur-sm border`}
               style={{
-                color: '#C44569',
-                  backgroundColor: `${palette.cream}DB`,
-                  borderColor: `${palette.deep}2E`,
-                  textShadow: '0 1px 0 rgba(255,255,255,0.7)',
-                }}
-              >
-                {hashtag}
-              </span>
-            </p>
+                color: COLORS.primaryNavy,
+                backgroundColor: `${COLORS.softChampagne}E8`,
+                borderColor: `${COLORS.mutedGold}66`,
+                textShadow: `0 1px 2px ${COLORS.softChampagne}99`,
+              }}
+            >
+              {hashtag}
+            </span>
+          </p>
 
             <h2 className="text-center">
               <span
-                className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-[0.08em] sm:tracking-[0.12em] uppercase max-w-md mx-auto leading-tight px-2 font-[family-name:var(--font-cinzel)]"
+                className={`${cinzel.className} inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-[0.08em] sm:tracking-[0.12em] uppercase max-w-md mx-auto leading-tight px-2`}
                 style={{
-                  color: '#FFFFFF',
-                  textShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9, 0 0 30px #FBCCC9',
+                  color: COLORS.softChampagne,
+                  textShadow: `0 0 16px ${COLORS.softChampagne}70, 0 0 28px ${COLORS.mutedGold}40, 0 2px 12px ${COLORS.deepRoyalBlue}99`,
                 }}
               >
                 {countdownText}
@@ -230,20 +236,19 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                 {/* Bold wedding date number + label - right corner */}
                 <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 flex flex-col items-end">
                   <span
-                    className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black select-none leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+                    className={`${playfair.className} text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold select-none leading-none`}
                     style={{
-                      fontFamily: 'var(--font-granika), sans-serif',
-                      color: '#FFFFFF',
-                      textShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9, 0 0 30px #FBCCC9',
+                      color: COLORS.deepRoyalBlue,
+                      textShadow: `0 0 14px ${COLORS.deepRoyalBlue}cc, 0 0 24px ${COLORS.softChampagne}50, 0 2px 8px rgba(0,0,0,0.5)`,
                     }}
                   >
                     {countdownNumbers[i]}
                   </span>
                   <span
-                    className="text-[8px] sm:text-[9px] tracking-widest uppercase mt-0.5"
+                    className={`${cinzel.className} text-[8px] sm:text-[9px] tracking-widest uppercase mt-0.5`}
                     style={{ 
-                      color: '#FFFFFF',
-                      textShadow: '0 0 5px #FBCCC9' 
+                      color: COLORS.warmIvory,
+                      textShadow: `0 1px 4px ${COLORS.deepRoyalBlue}99`,
                     }}
                   >
                     {countdownLabels[i]}
@@ -257,38 +262,37 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         {/* Bottom: Names + production credit + progress bar */}
         <div className="flex flex-col items-center justify-center w-full py-6 sm:py-8 px-4 flex-shrink-0">
           <p
-            className="text-center text-sm sm:text-base tracking-[0.18em] uppercase text-[family-name:var(--font-crimson)] mb-2"
+            className={`${cormorant.className} text-center text-sm sm:text-base tracking-[0.18em] uppercase mb-2`}
             style={{ 
-              color: '#FFFFFF',
-              textShadow: '0 0 5px #FBCCC9'
+              color: COLORS.warmIvory,
+              textShadow: `0 2px 8px ${COLORS.deepRoyalBlue}99`,
             }}
           >
             Almost ready for
           </p>
           <div
-            className="text-center text-2xl sm:text-3xl md:text-4xl mb-2 font-bold"
+            className={`${playfair.className} text-center text-2xl sm:text-3xl md:text-4xl mb-2 font-semibold tracking-wide`}
             style={{
-              fontFamily: bequta.style.fontFamily,
-              color: '#FFFFFF',
-              textShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9',
+              color: COLORS.softChampagne,
+              textShadow: `0 0 14px ${COLORS.softChampagne}60, 0 0 24px ${COLORS.mutedGold}30, 0 2px 8px ${COLORS.deepRoyalBlue}90`,
             }}
           >
             {coupleNames}
           </div>
           {productionCredit && (
             <p
-              className="text-[10px] sm:text-xs font-sans tracking-wider"
-              style={{ color: palette.soft }}
+              className={`${cormorant.className} text-[10px] sm:text-xs tracking-wider`}
+              style={{ color: COLORS.warmWhite }}
             >
               {productionCredit}
             </p>
           )}
           {/* Preparing message + progress bar */}
           <p
-            className="text-xs sm:text-sm tracking-[0.22em] mt-6 mb-3 font-[family-name:var(--font-crimson)] uppercase"
+            className={`${cormorant.className} text-xs sm:text-sm tracking-[0.22em] mt-6 mb-3 uppercase`}
             style={{ 
-              color: '#FFFFFF',
-              textShadow: '0 0 5px #FBCCC9'
+              color: COLORS.warmWhite,
+              textShadow: `0 2px 6px ${COLORS.deepRoyalBlue}99`,
             }}
           >
             Crafting your invitation experience
@@ -296,14 +300,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           <div className="w-full max-w-xs mx-auto">
             <div
               className="h-1 rounded-full overflow-hidden"
-              style={{ backgroundColor: `${palette.medium}40` }}
+              style={{ backgroundColor: `${COLORS.accentBlue}55` }}
             >
               <div
                 className="h-full rounded-full transition-all duration-300 ease-out"
                 style={{
                   width: `${progress}%`,
-                  backgroundColor: '#FFFFFF',
-                  boxShadow: '0 0 10px #FBCCC9, 0 0 20px #FBCCC9',
+                  backgroundColor: COLORS.mutedGold,
+                  boxShadow: `0 0 12px ${COLORS.mutedGold}80, 0 0 20px ${COLORS.softChampagne}40`,
                 }}
               />
             </div>

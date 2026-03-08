@@ -47,7 +47,7 @@ const BackgroundMusic = () => {
     <audio
       ref={audioRef}
       // Use an encoded URI to avoid issues with spaces/parentheses on some mobile browsers
-      src={encodeURI("/background_music/[MV] BSS(부석순)(SEVENTEEN) - The Reasons of My Smiles(자꾸만 웃게 돼).mp3")}
+      src={encodeURI("/background_music/The Ridleys - Love Is (Lyric Video) (1).mp3")}
       loop
       preload="auto"
       // playsInline helps iOS treat this as inline media rather than requiring fullscreen behavior

@@ -2,24 +2,35 @@
 
 import { useEffect, useState, useMemo } from "react"
 import { motion } from "motion/react"
-import { Cormorant_Garamond, Cinzel, Inter } from "next/font/google"
-import { bequta } from "@/app/fonts"
+import { Cormorant_Garamond, Playfair_Display, Cinzel } from "next/font/google"
 import { siteConfig } from "@/content/site"
 
+// Navy wedding palette
+const COLORS = {
+  primaryNavy: "#0C2650",
+  deepRoyalBlue: "#072142",
+  accentBlue: "#08467F",
+  softChampagne: "#F5E6D3",
+  warmIvory: "#FAF7F2",
+  mutedGold: "#C6A85E",
+  softBlush: "#E8CFCF",
+  warmWhite: "rgba(250, 247, 242, 0.95)",
+} as const
+
 const desktopImages: string[] = [
-  '/desktop-background/couple (1).jpg',
-  '/desktop-background/couple (2).jpg',
-  '/desktop-background/couple (3).jpg',
-  '/desktop-background/couple (4).jpg',
-  '/desktop-background/couple (5).jpg',
+  '/desktop-background/couple (1).webp',
+  '/desktop-background/couple (2).webp',
+  '/desktop-background/couple (3).webp',
+  '/desktop-background/couple (4).webp',
+  '/desktop-background/couple (5).webp',
 ];
 
 const mobileImages: string[] = [
-  '/mobile-background/couple (1).jpg',
-  '/mobile-background/couple (2).jpg',
-  '/mobile-background/couple (3).jpg',
-  '/mobile-background/couple (4).jpg',
-  '/mobile-background/couple (5).jpg',
+  '/mobile-background/couple (5).webp',
+  '/mobile-background/couple (8).webp',
+  '/mobile-background/couple (5).webp',
+  '/mobile-background/couple (8).webp',
+  '/mobile-background/couple (5).webp',
 ];
 
 const SHOW_BUTTERFLIES = false
@@ -29,14 +40,14 @@ const cormorant = Cormorant_Garamond({
   weight: ["400", "500", "600"],
 })
 
-const cinzel = Cinzel({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: "700",
+  weight: ["400", "500", "600", "700"],
 })
 
-const inter = Inter({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: "900",
+  weight: ["400", "600", "700"],
 })
 
 export function Hero() {
@@ -115,7 +126,7 @@ export function Hero() {
     : "THU"
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#51080F]">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#072142]">
       <div className="absolute inset-0 w-full h-full">
         {imagesLoaded && backgroundImages.map((image, index) => (
           <div
@@ -132,10 +143,27 @@ export function Hero() {
             }}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#FBCCC9]/90 via-[#FBCCC9]/70 to-transparent z-0" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FBCCC9]/75 z-0" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(251,204,201,0.3),transparent_55%)] mix-blend-screen" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(251,204,201,0.28),transparent_35%)] opacity-70 animate-[pulse_9s_ease-in-out_infinite]" />
+        {/* Navy gradient overlays - elegant depth without overpowering photos */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background: `linear-gradient(to top, ${COLORS.deepRoyalBlue}ee 0%, ${COLORS.primaryNavy}99 25%, transparent 55%), linear-gradient(to bottom, ${COLORS.primaryNavy}99 0%, transparent 35%)`,
+          }}
+        />
+        {/* Soft champagne glow - romantic ambient light */}
+        <div
+          className="absolute inset-0 z-0 opacity-60"
+          style={{
+            background: `radial-gradient(ellipse 80% 50% at 50% 80%, ${COLORS.softChampagne}40, transparent 50%), radial-gradient(ellipse 60% 40% at 50% 20%, ${COLORS.softChampagne}20, transparent 45%)`,
+          }}
+        />
+        {/* Subtle vignette for focus */}
+        <div
+          className="absolute inset-0 z-0 opacity-40"
+          style={{
+            background: `radial-gradient(ellipse at center, transparent 40%, ${COLORS.deepRoyalBlue}60 100%)`,
+          }}
+        />
       </div>
 
       {SHOW_BUTTERFLIES && (
@@ -463,68 +491,70 @@ export function Hero() {
         >
           {/* Main Invitation Text */}
           <div className="space-y-2 sm:space-y-3 md:space-y-4">
-            {/* Names & Tagline */}
+            {/* Invitation tagline - light ivory body text */}
             <h1
-              className={`${cormorant.className} text-xs sm:text-sm md:text-base lg:text-lg tracking-[0.24em] sm:tracking-[0.28em] uppercase font-medium text-center text-white`}
+              className={`${cormorant.className} text-xs sm:text-sm md:text-base lg:text-lg tracking-[0.24em] sm:tracking-[0.28em] uppercase font-medium text-center`}
               style={{
-                textShadow: "0 2px 10px rgba(251,204,201,0.5)",
+                color: COLORS.warmIvory,
+                textShadow: `0 2px 12px ${COLORS.deepRoyalBlue}80, 0 0 20px ${COLORS.softChampagne}30`,
               }}
             >
               Together with our families,
               <br />
               we joyfully invite you to witness our union.
             </h1>
+            {/* Couple names - Champagne, elegant serif */}
             <h1
-              className={`${bequta.className} text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl drop-shadow-2xl font-bold`}
+              className={`${playfair.className} text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-semibold tracking-wide`}
               style={{
-                color: '#FFFFFF',
-                textShadow: "0 0 24px rgba(255,255,255,0.8)",
-                fontWeight: 700,
+                color: COLORS.softChampagne,
+                textShadow: `0 0 24px ${COLORS.softChampagne}60, 0 2px 12px ${COLORS.deepRoyalBlue}90, 0 4px 24px rgba(0,0,0,0.2)`,
               }}
             >
               <span className="block">{groomName}</span>
-              <span className="block">&</span>
+              <span className={`${cormorant.className} block text-4xl sm:text-5xl md:text-6xl font-light italic`} style={{ color: COLORS.mutedGold }}>&</span>
               <span className="block">{brideName}</span>
             </h1>
           </div>
 
-          {/* Date & Time block */}
+          {/* Date & Time block - light ivory subtitle */}
           <div className="w-full max-w-2xl mx-auto">
             <div
-              className={`${cormorant.className} flex flex-col items-center gap-1.5 sm:gap-2.5 md:gap-3 text-white/95`}
-              style={{ textShadow: "0 0 16px rgba(255,255,255,0.6)" }}
+              className={`${cormorant.className} flex flex-col items-center gap-1.5 sm:gap-2.5 md:gap-3`}
+              style={{ color: COLORS.warmIvory, textShadow: `0 2px 12px ${COLORS.deepRoyalBlue}90` }}
             >
               <span
-                className={`${cinzel.className} text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] font-light text-white`}
-                style={{ textShadow: "0 0 14px rgba(255,255,255,0.65)" }}
+                className={`${cinzel.className} text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] font-light`}
+                style={{ color: COLORS.warmIvory }}
               >
                 {weddingMonth}
               </span>
 
               <div className="flex w-full items-center gap-2 sm:gap-4 md:gap-5">
                 {/* Day of week & divider */}
-              <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-2.5">
-                  <span className="h-[0.5px] flex-1 bg-white/45" />
+                <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-2.5">
+                  <span className="h-[0.5px] flex-1" style={{ backgroundColor: `${COLORS.softChampagne}55` }} />
                   <span
-                    className={`${cinzel.className} text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-light text-white`}
-                    style={{ textShadow: "0 0 14px rgba(255,255,255,0.65)" }}
+                    className={`${cinzel.className} text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-light`}
+                    style={{ color: COLORS.warmIvory }}
                   >
                     {ceremonyDayShort}
                   </span>
-                  <span className="h-[0.5px] w-6 sm:w-8 md:w-10 bg-white/45" />
+                  <span className="h-[0.5px] w-6 sm:w-8 md:w-10" style={{ backgroundColor: `${COLORS.softChampagne}55` }} />
                 </div>
 
-                {/* Day number */}
+                {/* Day number - muted gold accent with soft glow */}
                 <div className="relative flex items-center justify-center px-3 sm:px-4 md:px-5">
                   <span
                     aria-hidden="true"
-                    className="absolute inset-0 mx-auto h-[70%] max-h-[180px] w-[100px] sm:w-[140px] md:w-[170px] rounded-full bg-gradient-to-b from-[#FBCCC9]/40 via-[#FBCCC9]/30 to-transparent blur-[28px] opacity-80"
+                    className="absolute inset-0 mx-auto h-[70%] max-h-[180px] w-[100px] sm:w-[140px] md:w-[170px] rounded-full blur-[28px] opacity-70"
+                    style={{ background: `radial-gradient(ellipse, ${COLORS.mutedGold}50, transparent 70%)` }}
                   />
                   <span
-                    className={`${inter.className} relative text-[4rem] sm:text-[5.5rem] md:text-[6.5rem] lg:text-[7rem] font-black leading-none tracking-wider text-[#C44569]`}
+                    className={`${playfair.className} relative text-[4rem] sm:text-[5.5rem] md:text-[6.5rem] lg:text-[7rem] font-semibold leading-none tracking-wider`}
                     style={{
-                      textShadow: "0 0 22px rgba(251,204,201,0.9), 0 0 40px rgba(251,204,201,0.7)",
-                      filter: "drop-shadow(0 0 26px rgba(251,204,201,0.65))",
+                      color: COLORS.mutedGold,
+                      textShadow: `0 0 20px ${COLORS.mutedGold}80, 0 0 36px ${COLORS.softChampagne}40, 0 2px 8px ${COLORS.deepRoyalBlue}90`,
                     }}
                   >
                     {weddingDayNumber}
@@ -533,71 +563,74 @@ export function Hero() {
 
                 {/* Time */}
                 <div className="flex flex-1 items-center gap-1.5 sm:gap-2.5">
-                  <span className="h-[0.5px] w-6 sm:w-8 md:w-10 bg-white/45" />
+                  <span className="h-[0.5px] w-6 sm:w-8 md:w-10" style={{ backgroundColor: `${COLORS.softChampagne}55` }} />
                   <span
-                    className={`${cinzel.className} text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-light text-white`}
-                    style={{ textShadow: "0 0 14px rgba(255,255,255,0.65)" }}
+                    className={`${cinzel.className} text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-light`}
+                    style={{ color: COLORS.warmIvory }}
                   >
                     {ceremonyTime.split(",")[0]}
                   </span>
-                  <span className="h-[0.5px] flex-1 bg-white/45" />
+                  <span className="h-[0.5px] flex-1" style={{ backgroundColor: `${COLORS.softChampagne}55` }} />
                 </div>
               </div>
 
               <span
-                className={`${cinzel.className} text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] font-light text-white`}
-                style={{ textShadow: "0 0 14px rgba(255,255,255,0.65)" }}
+                className={`${cinzel.className} text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] font-light`}
+                style={{ color: COLORS.warmIvory }}
               >
                 {weddingYear}
               </span>
             </div>
           </div>
 
-          {/* Venue */}
+          {/* Venue - muted gold accent */}
           <div className="space-y-1 sm:space-y-1.5 pt-1 sm:pt-2">
             <p
-              className={`${cinzel.className} text-xs sm:text-sm md:text-base lg:text-lg uppercase tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] text-[#C44569] font-medium`}
+              className={`${cinzel.className} text-xs sm:text-sm md:text-base lg:text-lg uppercase tracking-[0.22em] sm:tracking-[0.26em] md:tracking-[0.3em] font-medium`}
               style={{
-                textShadow: "0 2px 18px rgba(251,204,201,0.5)",
+                color: COLORS.mutedGold,
+                textShadow: `0 2px 16px ${COLORS.mutedGold}60, 0 0 24px ${COLORS.softChampagne}30`,
               }}
             >
               {siteConfig.ceremony.venue}
             </p>
           </div>
 
-          {/* Call-to-action section */}
+          {/* Call-to-action section - body text: soft warm white */}
           <div className="pt-3 sm:pt-4 md:pt-5 flex flex-col gap-3 sm:gap-4 items-center max-w-2xl mx-auto w-full px-4">
             <p
-              className={`${cinzel.className} text-[0.7rem] sm:text-xs md:text-sm lg:text-base uppercase tracking-[0.24em] sm:tracking-[0.28em] text-white/95 font-normal leading-relaxed text-center px-4`}
+              className={`${cormorant.className} text-[0.7rem] sm:text-xs md:text-sm lg:text-base tracking-[0.2em] sm:tracking-[0.24em] font-normal leading-relaxed text-center px-4`}
               style={{
-                textShadow: "0 0 14px rgba(255,255,255,0.7)",
+                color: COLORS.warmWhite,
+                textShadow: `0 2px 10px ${COLORS.deepRoyalBlue}80`,
               }}
             >
               Your presence, prayers, and love will mean the world to us.
             </p>
 
-            {/* Call-to-action buttons */}
+            {/* CTA button - muted gold / champagne for premium feel */}
             <div className="w-full flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch">
-            <a
-              href="#guest-list"
-              className={`${cormorant.className} group relative flex-1 sm:min-w-[200px] md:min-w-[220px] rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C44569]/70`}
-              style={{
-                backgroundColor: "#C44569",
-                boxShadow: "0 10px 24px rgba(196,69,105,0.4)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#D65D7D";
-                e.currentTarget.style.boxShadow = "0 12px 28px rgba(196,69,105,0.5)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#C44569";
-                e.currentTarget.style.boxShadow = "0 10px 24px rgba(196,69,105,0.4)";
-              }}
-            >
-              <span className="relative z-10 inline-flex h-full min-h-[3rem] sm:min-h-[3.25rem] w-full items-center justify-center px-6 sm:px-8 text-[0.65rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.32em] sm:tracking-[0.36em] text-white font-semibold transition-all duration-300" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
-                Confirm Attendance
-              </span>
-            </a>
+              <a
+                href="#guest-list"
+                className={`${cormorant.className} group relative flex-1 sm:min-w-[200px] md:min-w-[220px] rounded-sm overflow-hidden transition-all duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08467F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#072142]`}
+                style={{
+                  backgroundColor: COLORS.mutedGold,
+                  boxShadow: `0 8px 24px ${COLORS.mutedGold}50, 0 2px 8px ${COLORS.deepRoyalBlue}60`,
+                  color: COLORS.primaryNavy,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#D4B96A";
+                  e.currentTarget.style.boxShadow = `0 12px 32px ${COLORS.mutedGold}60, 0 4px 12px ${COLORS.deepRoyalBlue}50`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = COLORS.mutedGold;
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${COLORS.mutedGold}50, 0 2px 8px ${COLORS.deepRoyalBlue}60`;
+                }}
+              >
+                <span className="relative z-10 inline-flex h-full min-h-[3rem] sm:min-h-[3.25rem] w-full items-center justify-center px-6 sm:px-8 text-[0.65rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.32em] sm:tracking-[0.36em] font-semibold transition-all duration-300">
+                  Confirm Attendance
+                </span>
+              </a>
             </div>
           </div>
         </div>

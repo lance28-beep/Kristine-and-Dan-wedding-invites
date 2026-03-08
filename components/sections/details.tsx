@@ -1,574 +1,644 @@
 "use client"
 
-import { Section } from "@/components/section"
-import { Shirt, Copy, Check, Navigation, MapPin } from "lucide-react"
-import { useState, useEffect } from "react"
+import { MapPin, Navigation, Shirt } from "lucide-react"
+import { Cormorant_Garamond, Inter } from "next/font/google"
+import { motion } from "motion/react"
 import Image from "next/image"
 import { QRCodeSVG } from "qrcode.react"
 import { siteConfig } from "@/content/site"
-import { bequta } from "@/app/fonts"
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+})
+
+// Luxury navy wedding palette
+const COLORS = {
+  deepNavy: "#072142",
+  primaryNavy: "#0C2650",
+  accentBlue: "#08467F",
+  champagne: "#F5E6D3",
+  mutedGold: "#C6A85E",
+  warmIvory: "#FAF7F2",
+  goldRgba: (a: number) => `rgba(198, 168, 94, ${a})`,
+}
+
+// Hotels — main recommendations
+const MAIN_HOTELS = [
+  {
+    name: "Richmonde Hotel Iloilo",
+    label: "Prep Hotel",
+    travelToChapel: "20 minutes drive to the chapel",
+    travelToReception: null,
+    image: "/detailsSection/Richmonde Hotel Iloilo.png",
+  },
+  {
+    name: "Diversion 21 Hotel Iloilo",
+    label: "Reception Venue",
+    travelToChapel: "15 minutes drive to the chapel",
+    travelToReception: null,
+    image: "/detailsSection/Diversion 21 Hotel Iloilo.png",
+  },
+]
+
+// Additional hotel options
+const ADDITIONAL_HOTELS = [
+  {
+    name: "Sams' 21 Hotel",
+    travelToChapel: "15 minutes drive to the chapel",
+    travelToReception: "2 minute walk from reception venue",
+    image: "/detailsSection/Sams’ 21 Hotel.png",
+  },
+  {
+    name: "Seda Atria",
+    travelToChapel: "20 minutes drive to chapel",
+    travelToReception: "6 minutes drive to reception venue",
+    image: "/detailsSection/Seda Atria  .png",
+  },
+]
+
+// Restaurants & Cafés
+const RESTAURANTS = [
+  { name: "Dayneto's Seafood and Grill restaurant", image: "/detailsSection/Dayneto’s Seafood and Grill restaurant.png" },
+  { name: "Urban Table", image: "/detailsSection/Urban Table .png" },
+  { name: "Alicia’s Batchoy", image: "/detailsSection/Alicia’s Batchoy.png" },
+  { name: "Monkey Grounds", image: "/detailsSection/Monkey Grounds.png" },
+  { name: "Clinic Coffee", image: "/detailsSection/Clinic Coffee.png" },
+  { name: "Neighbor Coffee", image: "/detailsSection/Neighbor Coffee.png" },
+  { name: "Happy Endings Creamery", image: "/detailsSection/Happy endings creamery.png" },
+]
+
+// Places to explore
+const PLACES = [
+  { name: "Iloilo Esplanade", image: "/detailsSection/Iloilo Esplanade.png" },
+  { name: "Jaro Cathedral", image: "/detailsSection/Jaro Cathedral.png" },
+  { name: "Molo Church", image: "/detailsSection/Molo Church.png" },
+  { name: "Molo Mansion", image: "/detailsSection/Molo Mansion.png" },
+  { name: "Festive Walk Iloilo", image: "/detailsSection/Festive Walk Iloilo.png" },
+]
+
+const fadeUp = {
+  initial: { opacity: 0, y: 32 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+}
 
 export function Details() {
-  const [copiedItems, setCopiedItems] = useState<Set<string>>(new Set())
-  const [currentReceptionImageIndex, setCurrentReceptionImageIndex] = useState(0)
-
-  const receptionImages = [
-    "/Details/La Vida Resort and Events Center.png",
-    "/Details/La Vida Resort and Events Center 2.png"
-  ]
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentReceptionImageIndex((prev) => (prev + 1) % receptionImages.length)
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const copyToClipboard = async (text: string, itemId: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopiedItems(prev => new Set(prev).add(itemId))
-      setTimeout(() => {
-        setCopiedItems(prev => {
-          const newSet = new Set(prev)
-          newSet.delete(itemId)
-          return newSet
-        })
-      }, 2000)
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
-
-  // Venue information from site config
-  const ceremonyVenueName = siteConfig.ceremony.location
-  const ceremonyVenueDetail = ""
-  const ceremonyAddress = siteConfig.ceremony.address
-  const ceremonyVenue = `${ceremonyVenueName}, ${ceremonyAddress}`
+  const ceremonyVenue = `${siteConfig.ceremony.location}, ${siteConfig.ceremony.address}`
   const ceremonyMapsLink = `https://maps.google.com/?q=${encodeURIComponent(ceremonyVenue)}`
-
-  const receptionVenueName = siteConfig.reception.location
-  const receptionVenueDetail = ""
-  const receptionAddress = siteConfig.reception.address
-  const receptionVenue = `${receptionVenueName}, ${receptionAddress}`
+  const receptionVenue = `${siteConfig.reception.location}, ${siteConfig.reception.address}`
   const receptionMapsLink = `https://maps.google.com/?q=${encodeURIComponent(receptionVenue)}`
 
-  const openInMaps = (link: string) => {
-    window.open(link, '_blank', 'noopener,noreferrer')
-  }
-
+  const openInMaps = (link: string) => window.open(link, "_blank", "noopener,noreferrer")
 
   return (
-    <Section id="details" className="relative py-16 sm:py-20 md:py-24 lg:py-28">
-      {/* Semi-transparent overlay for better text readability */}
-      <div className="absolute inset-0 bg-[#FBCCC9] backdrop-blur-sm pointer-events-none" />
+    <section
+      id="details"
+      className="relative w-full overflow-hidden"
+      style={{
+        background: "linear-gradient(to bottom, #072142, #0C2650, #08467F, #0C2650, #072142)",
+      }}
+    >
+      {/* ─── EVENT DETAILS (Header + Ceremony & Reception) ─── */}
+      <motion.div className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8" {...fadeUp}>
+        <div className="max-w-5xl mx-auto">
+          {/* Event Details Header */}
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <div
+              className="h-px w-16 sm:w-24 mx-auto mb-6"
+              style={{ background: `linear-gradient(90deg, transparent, ${COLORS.mutedGold}, transparent)` }}
+            />
+            <h2
+              className={`${cormorant.className} text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 uppercase tracking-[0.12em]`}
+              style={{ color: COLORS.champagne }}
+            >
+              Event Details
+            </h2>
+            <div
+              className="h-px w-16 sm:w-24 mx-auto mb-6"
+              style={{ background: `linear-gradient(90deg, transparent, ${COLORS.mutedGold}, transparent)` }}
+            />
+            <p
+              className={`${cormorant.className} text-base sm:text-lg md:text-xl font-light max-w-xl mx-auto leading-relaxed`}
+              style={{ color: COLORS.warmIvory }}
+            >
+              Everything you need to know about our special day
+            </p>
+          </div>
 
-      {/* Flower decoration - top left corner */}
-      <div className="absolute left-0 top-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-y-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Flower decoration - top right corner */}
-      <div className="absolute right-0 top-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1] scale-y-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Flower decoration - left bottom corner */}
-      <div className="absolute left-0 bottom-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Flower decoration - right bottom corner */}
-      <div className="absolute right-0 bottom-0 z-0 pointer-events-none">
-        <img
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1]"
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-
-      {/* Header */}
-      <div className="relative z-10 text-center mb-12 sm:mb-16 md:mb-20 px-4 sm:px-6">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#C44569] to-transparent" />
-        </div>
-        <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl ${bequta.className} font-bold text-[#C44569] mb-6 sm:mb-8 uppercase tracking-[0.12em] sm:tracking-[0.15em] elegant-text-shadow`}>
-          Event Details
-        </h2>
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="h-[1px] w-16 sm:w-24 bg-gradient-to-r from-transparent via-[#C44569] to-transparent" />
-        </div>
-        <p className="text-base sm:text-lg md:text-xl font-[family-name:var(--font-crimson)] text-[#C44569]/80 font-light max-w-xl mx-auto leading-relaxed tracking-wide px-4">
-          Everything you need to know about our special day
-        </p>
-      </div>
-
-      {/* Venue and Event Information */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 mb-8 sm:mb-12 md:mb-16 space-y-6 sm:space-y-10 md:space-y-14">
-        
-        {/* Ceremony Card */}
-        <div className="relative group">
-          {/* Subtle earth tone glow on hover */}
-          <div className="absolute -inset-1 bg-gradient-to-br from-[#C44569]/20 to-[#C44569]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
-          
-          {/* Main card */}
-          <div className="relative elegant-card bg-[#FFF7F6] rounded-xl sm:rounded-2xl overflow-hidden border-4 border-[#C44569]/30 premium-shadow hover:border-[#C44569]/50 transition-all duration-300">
-            {/* Venue Image */}
-            <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden">
-              <Image
-                src="/Details/Mary Mediatrix of All Grace Parish.jpg"
-                alt={siteConfig.ceremony.venue}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              
-              {/* Venue name overlay with warm gold accent */}
-              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 right-3 sm:right-4 md:right-6">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-ephesis)] text-[#FFF7F6] mb-1 sm:mb-2 drop-shadow-lg">
-                  Ceremony
-                </p>
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-[family-name:var(--font-crimson)] font-normal text-white mb-0.5 sm:mb-1 drop-shadow-lg uppercase tracking-[0.1em] leading-tight">
-                  {siteConfig.ceremony.venue}
-                </h3>
-                <p className="text-xs sm:text-sm md:text-base font-[family-name:var(--font-crimson)] text-white/95 drop-shadow-md tracking-wide">
-                  {siteConfig.ceremony.address}
-                </p>
+          {/* Ceremony & Reception Cards with Images + QR Codes */}
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+            {/* Ceremony Card */}
+            <motion.div
+              className="group relative rounded-2xl overflow-hidden border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+              style={{
+                backgroundColor: COLORS.primaryNavy,
+                borderColor: COLORS.goldRgba(0.25),
+                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+              }}
+              whileHover={{ borderColor: COLORS.goldRgba(0.4) }}
+            >
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src="/Details/Mere Monique Home Chapel.png"
+                  alt={siteConfig.ceremony.venue}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                  <p
+                    className={`${inter.className} text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-1`}
+                    style={{ color: COLORS.mutedGold }}
+                  >
+                    Ceremony
+                  </p>
+                  <h3 className={`${cormorant.className} text-lg sm:text-xl md:text-2xl font-semibold text-white`}>
+                    {siteConfig.ceremony.venue}
+                  </h3>
+                  <p className={`${cormorant.className} text-sm text-white/90`}>{siteConfig.ceremony.address}</p>
+                </div>
               </div>
-            </div>
-
-            {/* Event Details Content */}
-            <div className="p-3 sm:p-5 md:p-7 lg:p-9">
-              {/* Date Section */}
-              <div className="text-center mb-5 sm:mb-8 md:mb-10">
-                {/* Day name */}
-                <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] uppercase tracking-[0.2em] mb-2 sm:mb-3">
-                  {siteConfig.ceremony.day}
+              <div className="p-4 sm:p-5 md:p-6">
+                <p className={`${inter.className} text-xs uppercase tracking-wider mb-4`} style={{ color: COLORS.mutedGold }}>
+                  {siteConfig.ceremony.day} · {siteConfig.ceremony.time}
                 </p>
-                
-                {/* Month - Script style with warm gold */}
-                <div className="mb-2 sm:mb-4">
-                  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-[family-name:var(--font-ephesis)] text-[#C44569] leading-none">
-                    May
-                  </p>
-                </div>
-                
-                {/* Day and Year */}
-                <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-7">
-                  <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-[family-name:var(--font-crimson)] font-normal text-[#C44569] leading-none elegant-text-shadow">
-                    23
-                  </p>
-                  <div className="h-10 sm:h-12 md:h-16 lg:h-20 w-[2px] bg-gradient-to-b from-[#C44569] via-[#C44569] to-[#C44569]" />
-                  <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-[family-name:var(--font-crimson)] font-light text-[#C44569] leading-none">
-                    2026
-                  </p>
-                </div>
-
-                {/* Decorative line */}
-                <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                  <div className="h-[1px] w-8 sm:w-10 md:w-14 bg-gradient-to-r from-transparent via-[#C44569] to-[#C44569]" />
-                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#C44569] rounded-full" />
-                  <div className="h-[1px] w-8 sm:w-10 md:w-14 bg-gradient-to-l from-transparent via-[#C44569] to-[#C44569]" />
-                </div>
-
-                {/* Time */}
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] tracking-wide">
-                  {siteConfig.ceremony.time}
-                </p>
-              </div>
-
-              {/* Location Details */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 to-[#FFF7F6] rounded-xl p-3 sm:p-4 md:p-5 mb-4 sm:mb-6 border-4 border-[#C44569]/20">
-                <div className="flex items-start gap-2 sm:gap-3 md:gap-4">
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#C44569] mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm md:text-base font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] mb-1.5 sm:mb-2 uppercase tracking-wide">
-                      Location
-                    </p>
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                      {ceremonyVenueName}
-                    </p>
-                    {ceremonyVenueDetail && (
-                      <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] text-[#C44569]/70 leading-relaxed mt-1">
-                        {ceremonyVenueDetail}
-                      </p>
-                    )}
-                    <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] text-[#C44569]/70 leading-relaxed">
-                      {ceremonyAddress}
-                    </p>
-                  </div>
-                  {/* QR Code for Ceremony - Right side */}
-                  <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                    <div className="bg-[#FFF7F6] p-1.5 sm:p-2 md:p-2.5 rounded-lg border border-[#C44569]/20 shadow-sm">
-                      <QRCodeSVG
-                        value={ceremonyMapsLink}
-                        size={80}
-                        level="M"
-                        includeMargin={false}
-                        fgColor="#C44569"
-                        bgColor="#FFF7F6"
-                      />
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                  <button
+                    onClick={() => openInMaps(ceremonyMapsLink)}
+                    className={`flex items-center gap-2 ${cormorant.className} text-sm font-medium px-4 py-2.5 rounded-lg transition-all hover:-translate-y-0.5`}
+                    style={{ backgroundColor: COLORS.mutedGold, color: COLORS.primaryNavy }}
+                  >
+                    <Navigation className="w-4 h-4" /> Get Directions
+                  </button>
+                  <div className="flex flex-col items-center gap-1">
+                    <div
+                      className="p-2 rounded-lg border"
+                      style={{ backgroundColor: COLORS.warmIvory, borderColor: COLORS.goldRgba(0.3) }}
+                    >
+                      <QRCodeSVG value={ceremonyMapsLink} size={72} level="M" includeMargin={false} fgColor="#0C2650" bgColor="#FAF7F2" />
                     </div>
-                    <p className="text-[9px] sm:text-[10px] md:text-xs font-[family-name:var(--font-crimson)] text-[#C44569]/60 italic text-center max-w-[80px]">
+                    <p className={`${cormorant.className} text-[10px] italic`} style={{ color: COLORS.champagne }}>
                       Scan for directions
                     </p>
                   </div>
                 </div>
               </div>
+            </motion.div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4">
-                <button
-                  onClick={() => openInMaps(ceremonyMapsLink)}
-                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 md:py-3 bg-[#C44569] hover:bg-[#a63a59] text-white rounded-lg font-[family-name:var(--font-crimson)] font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] premium-shadow"
-                  aria-label="Get directions to ceremony venue"
-                >
-                  <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-                  <span>Get Directions</span>
-                </button>
-                <button
-                  onClick={() => copyToClipboard(ceremonyVenue, 'ceremony')}
-                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 md:py-3 bg-[#FFF7F6] border-2 border-[#C44569]/30 hover:border-[#C44569]/50 hover:bg-[#C44569]/10 text-[#C44569] rounded-lg font-[family-name:var(--font-crimson)] font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                  aria-label="Copy ceremony venue address"
-                >
-                  {copiedItems.has('ceremony') ? (
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0 text-[#C44569]" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-                  )}
-                  <span>{copiedItems.has('ceremony') ? 'Copied!' : 'Copy Address'}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Reception Card */}
-        <div className="relative group">
-          {/* Subtle earth tone glow on hover */}
-          <div className="absolute -inset-1 bg-gradient-to-br from-[#C44569]/20 to-[#C44569]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
-          
-          {/* Main card */}
-          <div className="relative elegant-card bg-[#FFF7F6] rounded-xl sm:rounded-2xl overflow-hidden border-4 border-[#C44569]/30 premium-shadow hover:border-[#C44569]/50 transition-all duration-300">
-            {/* Venue Image */}
-            <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden">
-              {receptionImages.map((src, index) => (
-                <div
-                  key={src}
-                  className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                    index === currentReceptionImageIndex ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <Image
-                    src={src}
-                    alt={siteConfig.reception.venue}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-                    priority={index === 0}
-                  />
-                </div>
-              ))}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
-              
-              {/* Venue name overlay with warm gold accent */}
-              <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 right-3 sm:right-4 md:right-6 z-20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-ephesis)] text-[#FFF7F6] mb-1 sm:mb-2 drop-shadow-lg">
-                  Reception
-                </p>
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-[family-name:var(--font-crimson)] font-normal text-white mb-0.5 sm:mb-1 drop-shadow-lg uppercase tracking-[0.1em] leading-tight">
-                  {siteConfig.reception.venue}
-                </h3>
-                <p className="text-xs sm:text-sm md:text-base font-[family-name:var(--font-crimson)] text-white/95 drop-shadow-md tracking-wide">
-                  {siteConfig.reception.address}
-                </p>
-              </div>
-            </div>
-
-            {/* Event Details Content */}
-            <div className="p-3 sm:p-5 md:p-7 lg:p-9">
-              {/* Time */}
-              <div className="text-center mb-5 sm:mb-8">
-                {siteConfig.reception.time === "To follow after the ceremony" ? (
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] tracking-wide">
-                    To follow after the ceremony
+            {/* Reception Card */}
+            <motion.div
+              className="group relative rounded-2xl overflow-hidden border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+              style={{
+                backgroundColor: COLORS.primaryNavy,
+                borderColor: COLORS.goldRgba(0.25),
+                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+              }}
+              whileHover={{ borderColor: COLORS.goldRgba(0.4) }}
+            >
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src="/Details/JR Hall Diversion 21 Hotel.png"
+                  alt={siteConfig.reception.venue}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                  <p
+                    className={`${inter.className} text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-1`}
+                    style={{ color: COLORS.mutedGold }}
+                  >
+                    Reception
                   </p>
-                ) : (
-                  <>
-                    <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] uppercase tracking-[0.2em] mb-2 sm:mb-3">
-                      {siteConfig.reception.time === "After ceremony" ? "Starts" : "Starts at"}
-                    </p>
-                    <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] tracking-wide">
-                      {siteConfig.reception.time}
-                    </p>
-                  </>
-                )}
+                  <h3 className={`${cormorant.className} text-lg sm:text-xl md:text-2xl font-semibold text-white`}>
+                    {siteConfig.reception.venue}
+                  </h3>
+                  <p className={`${cormorant.className} text-sm text-white/90`}>{siteConfig.reception.address}</p>
+                </div>
               </div>
-
-              {/* Location Details */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 to-[#FFF7F6] rounded-xl p-3 sm:p-4 md:p-5 mb-4 sm:mb-6 border-4 border-[#C44569]/20">
-                <div className="flex items-start gap-2 sm:gap-3 md:gap-4">
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-[#C44569] mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm md:text-base font-[family-name:var(--font-crimson)] font-semibold text-[#C44569] mb-1.5 sm:mb-2 uppercase tracking-wide">
-                      Location
-                    </p>
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                      {receptionVenueName}
-                    </p>
-                    {receptionVenueDetail && (
-                      <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] text-[#C44569]/70 leading-relaxed mt-1">
-                        {receptionVenueDetail}
-                      </p>
-                    )}
-                    <p className="text-[10px] sm:text-xs md:text-sm font-[family-name:var(--font-crimson)] text-[#C44569]/70 leading-relaxed">
-                      {receptionAddress}
-                    </p>
-                  </div>
-                  {/* QR Code for Reception - Right side */}
-                  <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                    <div className="bg-[#FFF7F6] p-1.5 sm:p-2 md:p-2.5 rounded-lg border border-[#C44569]/20 shadow-sm">
-                      <QRCodeSVG
-                        value={receptionMapsLink}
-                        size={80}
-                        level="M"
-                        includeMargin={false}
-                        fgColor="#C44569"
-                        bgColor="#FFF7F6"
-                      />
+              <div className="p-4 sm:p-5 md:p-6">
+                <p className={`${inter.className} text-xs uppercase tracking-wider mb-4`} style={{ color: COLORS.mutedGold }}>
+                  {siteConfig.reception.time}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                  <button
+                    onClick={() => openInMaps(receptionMapsLink)}
+                    className={`flex items-center gap-2 ${cormorant.className} text-sm font-medium px-4 py-2.5 rounded-lg transition-all hover:-translate-y-0.5`}
+                    style={{ backgroundColor: COLORS.mutedGold, color: COLORS.primaryNavy }}
+                  >
+                    <Navigation className="w-4 h-4" /> Get Directions
+                  </button>
+                  <div className="flex flex-col items-center gap-1">
+                    <div
+                      className="p-2 rounded-lg border"
+                      style={{ backgroundColor: COLORS.warmIvory, borderColor: COLORS.goldRgba(0.3) }}
+                    >
+                      <QRCodeSVG value={receptionMapsLink} size={72} level="M" includeMargin={false} fgColor="#0C2650" bgColor="#FAF7F2" />
                     </div>
-                    <p className="text-[9px] sm:text-[10px] md:text-xs font-[family-name:var(--font-crimson)] text-[#C44569]/60 italic text-center max-w-[80px]">
+                    <p className={`${cormorant.className} text-[10px] italic`} style={{ color: COLORS.champagne }}>
                       Scan for directions
                     </p>
                   </div>
                 </div>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4">
-                <button
-                  onClick={() => openInMaps(receptionMapsLink)}
-                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 md:py-3 bg-[#C44569] hover:bg-[#a63a59] text-white rounded-lg font-[family-name:var(--font-crimson)] font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] premium-shadow"
-                  aria-label="Get directions to reception venue"
-                >
-                  <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-                  <span>Get Directions</span>
-                </button>
-                <button
-                  onClick={() => copyToClipboard(receptionVenue, 'reception')}
-                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 md:py-3 bg-[#FFF7F6] border-2 border-[#C44569]/30 hover:border-[#C44569]/50 hover:bg-[#C44569]/10 text-[#C44569] rounded-lg font-[family-name:var(--font-crimson)] font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-                  aria-label="Copy reception venue address"
-                >
-                  {copiedItems.has('reception') ? (
-                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0 text-[#C44569]" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-                  )}
-                  <span>{copiedItems.has('reception') ? 'Copied!' : 'Copy Address'}</span>
-                </button>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Attire Information */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-5">
-            <div className="h-px w-10 sm:w-14 md:w-20 bg-[#C44569]/50" />
-            <Shirt className="w-5 h-5 sm:w-6 sm:h-6 text-[#C44569]" />
-            <div className="h-px w-10 sm:w-14 md:w-20 bg-[#C44569]/50" />
-          </div>
-          <h3 className={`text-xl sm:text-2xl md:text-3xl ${bequta.className} font-bold text-[#C44569] mb-3 sm:mb-4 uppercase tracking-[0.12em]`}>
-            Attire Guidelines
-          </h3>
-          <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] font-light">
-            Please dress according to the guidelines below
+      {/* ─── 1. DESTINATION FEATURE ─── */}
+      <motion.div
+        className="relative py-20 sm:py-24 md:py-32 lg:py-36 px-4 sm:px-6 md:px-8"
+        style={{
+          background: "linear-gradient(180deg, rgba(7,33,66,0.4) 0%, rgba(12,38,80,0.6) 50%, rgba(7,33,66,0.5) 100%)",
+        }}
+        {...fadeUp}
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <p
+            className={`${inter.className} text-[10px] sm:text-xs tracking-[0.35em] uppercase mb-4`}
+            style={{ color: COLORS.mutedGold }}
+          >
+            Destination
+          </p>
+          <h2
+            className={`${cormorant.className} text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-6 leading-tight`}
+            style={{ color: COLORS.champagne }}
+          >
+            Iloilo City
+          </h2>
+          <div
+            className="h-px w-24 sm:w-32 mx-auto mb-8"
+            style={{ background: `linear-gradient(90deg, transparent, ${COLORS.mutedGold}, transparent)` }}
+          />
+          <p
+            className={`${cormorant.className} text-base sm:text-lg md:text-xl font-normal leading-relaxed max-w-2xl mx-auto`}
+            style={{ color: "rgba(245, 230, 211, 0.92)", lineHeight: 1.75 }}
+          >
+            Iloilo City — where heritage meets modern charm. A place rich in culture, warm hospitality, and unforgettable
+            flavors. We can&apos;t wait for you to experience it with us.
           </p>
         </div>
+      </motion.div>
 
-        {/* Attire Cards */}
-        <div className="space-y-5 sm:space-y-6 md:space-y-8">
-          {/* Principal Sponsor Attire */}
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-br from-[#C44569]/15 to-[#C44569]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
-            
-            <div className="relative bg-[#FFF7F6] backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 lg:p-9 border-4 border-[#C44569]/30 shadow-lg hover:shadow-xl transition-all duration-300">
-              <h4 className={`text-base sm:text-lg md:text-xl lg:text-2xl ${bequta.className} font-bold text-[#C44569] mb-4 sm:mb-5 md:mb-6 uppercase tracking-[0.12em] text-center px-2`}>
-                Principal Sponsor Attire
-              </h4>
+      {/* ─── 2. WHERE TO STAY ─── */}
+      <motion.div className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8" {...fadeUp}>
+        <div className="max-w-6xl mx-auto">
+          <p
+            className={`${inter.className} text-[10px] sm:text-xs tracking-[0.3em] uppercase mb-2`}
+            style={{ color: COLORS.mutedGold }}
+          >
+            Where to Stay
+          </p>
+          <h2
+            className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl font-semibold mb-12`}
+            style={{ color: COLORS.champagne }}
+          >
+            Recommended Hotels
+          </h2>
 
-              {/* Copy: follow color palette */}
-              <p className="text-center text-xs sm:text-sm md:text-base lg:text-lg font-[family-name:var(--font-crimson)] text-[#C44569]/90 font-light leading-relaxed mb-4 sm:mb-5 md:mb-6 max-w-xl mx-auto px-3">
-                Please follow the color palette below for your outfit.
-              </p>
-
-              {/* Principal sponsor attire image */}
-              <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-2xl mx-auto rounded-lg sm:rounded-xl overflow-hidden border border-[#C44569]/30 mb-4 sm:mb-6 md:mb-8">
-                <Image
-                  src="/Details/sponsors.png"
-                  alt="Principal sponsor attire — follow the color palette"
-                  fill
-                  className="object-contain bg-[#FFF7F6]/50 p-2 sm:p-3"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 672px"
-                />
-              </div>
-
-              {/* Color palette for principal sponsors */}
-              <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap mb-5 sm:mb-6 md:mb-7 px-2">
-                {["#CBA990", "#EBD3B9", "#F5E1C0"].map((color) => (
-                  <div
-                    key={color}
-                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full shadow-md border-2 border-white ring-2 ring-[#C44569]/30 hover:scale-110 transition-transform duration-300"
-                    style={{ backgroundColor: color }}
-                    title={color}
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-16">
+            {MAIN_HOTELS.map((hotel) => (
+              <motion.div
+                key={hotel.name}
+                className="group relative rounded-2xl overflow-hidden border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+                style={{
+                  backgroundColor: COLORS.primaryNavy,
+                  borderColor: COLORS.goldRgba(0.2),
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                }}
+                whileHover={{ borderColor: COLORS.goldRgba(0.4) }}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={hotel.image}
+                    alt={hotel.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 50vw"
                   />
-                ))}
-              </div>
-              
-              {/* Sponsors Dress Code Text */}
-              <div className="text-center pt-3 sm:pt-4 border-t border-[#C44569]/20 px-3 sm:px-4">
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed mb-3 sm:mb-4">
-                  <span className="font-semibold">Ninang:</span> Long Gown
-                </p>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">Ninong:</span> Barong & Black Pants
-                </p>
-              </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 md:p-6">
+                    <span
+                      className={`${inter.className} inline-block text-[10px] sm:text-xs tracking-[0.2em] uppercase px-2 py-1 rounded mb-2`}
+                      style={{ backgroundColor: COLORS.mutedGold, color: COLORS.primaryNavy }}
+                    >
+                      {hotel.label}
+                    </span>
+                    <h3 className={`${cormorant.className} text-xl sm:text-2xl md:text-3xl font-semibold text-white`}>
+                      {hotel.name}
+                    </h3>
+                  </div>
+                </div>
+                <div className="p-4 sm:p-5 md:p-6">
+                  <div className="flex items-center gap-2 text-sm">
+                    <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
+                    <p className={`${cormorant.className} text-white/90`}>{hotel.travelToChapel}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Additional Options */}
+          <p
+            className={`${inter.className} text-[10px] sm:text-xs tracking-[0.25em] uppercase mb-6`}
+            style={{ color: COLORS.champagne, opacity: 0.9 }}
+          >
+            You may also check out
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+            {ADDITIONAL_HOTELS.map((hotel) => (
+              <motion.div
+                key={hotel.name}
+                className="group relative rounded-2xl overflow-hidden border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
+                style={{
+                  backgroundColor: COLORS.primaryNavy,
+                  borderColor: COLORS.goldRgba(0.15),
+                  boxShadow: "0 6px 24px rgba(0,0,0,0.2)",
+                }}
+                whileHover={{ borderColor: COLORS.goldRgba(0.35) }}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={hotel.image}
+                    alt={hotel.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <h3 className={`absolute bottom-0 left-0 right-0 p-4 sm:p-5 ${cormorant.className} text-lg sm:text-xl font-semibold text-white`}>
+                    {hotel.name}
+                  </h3>
+                </div>
+                <div className="p-4 sm:p-5 space-y-1">
+                  <p className={`${cormorant.className} text-sm text-white/90`}>{hotel.travelToChapel}</p>
+                  <p className={`${cormorant.className} text-sm text-white/80`}>{hotel.travelToReception}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ─── 3. COUPLE'S FAVORITES ─── */}
+      <motion.div
+        className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8"
+        style={{
+          background: "linear-gradient(180deg, rgba(7,33,66,0.5) 0%, rgba(12,38,80,0.7) 100%)",
+        }}
+        {...fadeUp}
+      >
+        <div className="max-w-6xl mx-auto">
+          <p
+            className={`${inter.className} text-[10px] sm:text-xs tracking-[0.3em] uppercase mb-2`}
+            style={{ color: COLORS.mutedGold }}
+          >
+            Our Favorites
+          </p>
+          <h2
+            className={`${cormorant.className} text-3xl sm:text-4xl md:text-5xl font-semibold mb-6`}
+            style={{ color: COLORS.champagne }}
+          >
+            In Iloilo City
+          </h2>
+          <p
+            className={`${cormorant.className} text-base sm:text-lg max-w-2xl mb-12 leading-relaxed`}
+            style={{ color: "rgba(245, 230, 211, 0.9)", lineHeight: 1.7 }}
+          >
+            While you&apos;re in Iloilo, here are some of our favorite places to eat, relax, and explore.
+          </p>
+
+          {/* Restaurants & Cafés */}
+          <div className="mb-16">
+            <h3
+              className={`${cormorant.className} text-xl sm:text-2xl font-semibold mb-6`}
+              style={{ color: COLORS.champagne }}
+            >
+              Restaurants & Cafés
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5">
+              {RESTAURANTS.map((item) => (
+                <motion.div
+                  key={item.name}
+                  className="group relative aspect-square rounded-xl overflow-hidden border transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
+                  style={{
+                    borderColor: COLORS.goldRgba(0.15),
+                    backgroundColor: COLORS.primaryNavy,
+                  }}
+                  whileHover={{ borderColor: COLORS.goldRgba(0.4) }}
+                  {...fadeUp}
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover transition-transform duration-600 group-hover:scale-110"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                  <div className="absolute inset-0 flex items-end p-3 sm:p-4">
+                    <p
+                      className={`${cormorant.className} text-sm sm:text-base font-medium text-white transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300`}
+                    >
+                      {item.name}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
 
-          {/* Guest Attire */}
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-br from-[#C44569]/15 to-[#C44569]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
-            
-            <div className="relative bg-[#FFF7F6] backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 lg:p-9 border-4 border-[#C44569]/30 shadow-lg hover:shadow-xl transition-all duration-300">
-              <h4 className={`text-base sm:text-lg md:text-xl lg:text-2xl ${bequta.className} font-bold text-[#C44569] mb-4 sm:mb-5 md:mb-6 uppercase tracking-[0.12em] text-center px-2`}>
-                Guest Attire
-              </h4>
-
-              {/* Copy: follow color palette */}
-              <p className="text-center text-xs sm:text-sm md:text-base lg:text-lg font-[family-name:var(--font-crimson)] text-[#C44569]/90 font-light leading-relaxed mb-4 sm:mb-5 md:mb-6 max-w-xl mx-auto px-3">
-                Please follow the color palette below for your outfit.
-              </p>
-
-              {/* Guest attire image */}
-              <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] max-w-2xl mx-auto rounded-lg sm:rounded-xl overflow-hidden border border-[#C44569]/30 mb-4 sm:mb-6 md:mb-8">
-                <Image
-                  src="/Details/guest (3).png"
-                  alt="Guest attire inspiration — follow the color palette"
-                  fill
-                  className="object-contain bg-[#FFF7F6]/50 p-2 sm:p-3"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 672px"
-                />
-              </div>
-
-              {/* Color palette circles */}
-              <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap mb-5 sm:mb-6 md:mb-7 px-2">
-                {["#CBA990", "#EBD3B9", "#F5E1C0"].map((color) => (
-                  <div
-                    key={color}
-                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full shadow-md border-2 border-white ring-2 ring-[#C44569]/30 hover:scale-110 transition-transform duration-300"
-                    style={{ backgroundColor: color }}
-                    title={color}
+          {/* Places to Explore */}
+          <div>
+            <h3
+              className={`${cormorant.className} text-xl sm:text-2xl font-semibold mb-6`}
+              style={{ color: COLORS.champagne }}
+            >
+              Places to Explore
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-5">
+              {PLACES.map((item) => (
+                <motion.div
+                  key={item.name}
+                  className="group relative aspect-[3/4] rounded-xl overflow-hidden border transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
+                  style={{
+                    borderColor: COLORS.goldRgba(0.15),
+                    backgroundColor: COLORS.primaryNavy,
+                  }}
+                  whileHover={{ borderColor: COLORS.goldRgba(0.4) }}
+                  {...fadeUp}
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover transition-transform duration-600 group-hover:scale-110"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
                   />
-                ))}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                    <p className={`${cormorant.className} text-sm sm:text-base font-medium text-white`}>{item.name}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ─── ATTIRE GUIDELINES ─── */}
+      <motion.div className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8" {...fadeUp}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10 sm:mb-12">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4">
+              <div className="h-px w-10 sm:w-14 md:w-20" style={{ background: `linear-gradient(90deg, transparent, ${COLORS.mutedGold})` }} />
+              <Shirt className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: COLORS.mutedGold }} />
+              <div className="h-px w-10 sm:w-14 md:w-20" style={{ background: `linear-gradient(90deg, ${COLORS.mutedGold}, transparent)` }} />
+            </div>
+            <h2
+              className={`${cormorant.className} text-2xl sm:text-3xl md:text-4xl font-semibold mb-3 uppercase tracking-[0.12em]`}
+              style={{ color: COLORS.champagne }}
+            >
+              Attire Guidelines
+            </h2>
+            <p
+              className={`${cormorant.className} text-sm sm:text-base md:text-lg font-light`}
+              style={{ color: COLORS.warmIvory }}
+            >
+              Please dress according to the guidelines below
+            </p>
+          </div>
+
+          <div
+            className="rounded-2xl p-6 sm:p-8 md:p-10 border"
+            style={{
+              backgroundColor: "rgba(250, 247, 242, 0.06)",
+              borderColor: COLORS.goldRgba(0.25),
+            }}
+          >
+            <div className="grid sm:grid-cols-2 gap-8 sm:gap-10">
+              <div>
+                <h3
+                  className={`${cormorant.className} text-lg sm:text-xl font-semibold mb-4 uppercase tracking-wide`}
+                  style={{ color: COLORS.champagne }}
+                >
+                  Principal Sponsor
+                </h3>
+                <p className={`${cormorant.className} text-sm sm:text-base leading-relaxed mb-2`} style={{ color: COLORS.warmIvory }}>
+                  <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Ninang:</span> {siteConfig.dressCode.sponsors.female}
+                </p>
+                <p className={`${cormorant.className} text-sm sm:text-base leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                  <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Ninong:</span> {siteConfig.dressCode.sponsors.male}
+                </p>
+                <div className="flex gap-2 mt-4">
+                  {siteConfig.dressCode.colors.map((color) => (
+                    <div
+                      key={color}
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2"
+                      style={{ backgroundColor: color, borderColor: COLORS.goldRgba(0.4) }}
+                    />
+                  ))}
+                </div>
               </div>
-              
-              {/* Guest Dress Code Text */}
-              <div className="text-center pt-3 sm:pt-4 border-t border-[#C44569]/20 px-3 sm:px-4">
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed mb-3 sm:mb-4">
-                  <span className="font-semibold">Semi-Formal</span>
+              <div>
+                <h3
+                  className={`${cormorant.className} text-lg sm:text-xl font-semibold mb-4 uppercase tracking-wide`}
+                  style={{ color: COLORS.champagne }}
+                >
+                  Guest Attire
+                </h3>
+                <p className={`${cormorant.className} text-sm sm:text-base leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                  <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Semi-Formal</span>
+                </p>
+                <p className={`${cormorant.className} text-xs sm:text-sm mt-3 opacity-90`} style={{ color: COLORS.warmIvory }}>
+                  {siteConfig.dressCode.note}
                 </p>
               </div>
             </div>
           </div>
         </div>
+      </motion.div>
 
-        {/* Important Reminders Section */}
-        <div className="relative group mt-10 sm:mt-14 md:mt-16">
-          <div className="absolute -inset-1 bg-gradient-to-br from-[#C44569]/15 to-[#C44569]/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
-          
-          <div className="relative bg-[#FFF7F6] backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-9 border-4 border-[#C44569]/30 shadow-lg hover:shadow-xl transition-all duration-300" style={{ backgroundColor: '#FFF7F6' }}>
-            <h4 className={`text-lg sm:text-xl md:text-2xl ${bequta.className} font-bold text-[#C44569] mb-6 sm:mb-7 md:mb-8 uppercase tracking-[0.12em] text-center`}>
-              Important Reminders
-            </h4>
-            
-            {/* Reminders List */}
-            <div className="space-y-5 sm:space-y-6 md:space-y-7">
-              {/* Attendance Limited */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 via-[#FFF7F6]/50 to-[#FFF7F6] rounded-xl p-5 sm:p-6 md:p-7 border border-[#C44569]/20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">Invitation Only:</span> As we celebrate this moment with our closest loved ones, we kindly ask that attendance be limited to those named on the invitation.
-                </p>
-              </div>
+      {/* ─── IMPORTANT REMINDERS ─── */}
+      <motion.div
+        className="relative py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-8"
+        style={{
+          background: "linear-gradient(180deg, rgba(7,33,66,0.6) 0%, rgba(7,33,66,0.9) 100%)",
+        }}
+        {...fadeUp}
+      >
+        <div className="max-w-4xl mx-auto">
+          <h2
+            className={`${cormorant.className} text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-10 sm:mb-12 uppercase tracking-[0.12em]`}
+            style={{ color: COLORS.champagne }}
+          >
+            Important Reminders
+          </h2>
 
-              {/* No Boxed Gifts */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 via-[#FFF7F6]/50 to-[#FFF7F6] rounded-xl p-5 sm:p-6 md:p-7 border border-[#C44569]/20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">Gift Policy:</span> We kindly ask for no boxed gifts. Monetary gifts are welcome but never expected.
-                </p>
-              </div>
-
-              {/* Adults Only */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 via-[#FFF7F6]/50 to-[#FFF7F6] rounded-xl p-5 sm:p-6 md:p-7 border border-[#C44569]/20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">Adults-Only Event:</span> We love your little ones, but to keep the celebration intimate, we kindly request an adults-only event. (Children in our family and the entourage are the exception)
-                </p>
-              </div>
-
-              {/* No Photos */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 via-[#FFF7F6]/50 to-[#FFF7F6] rounded-xl p-5 sm:p-6 md:p-7 border border-[#C44569]/20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">Photo Policy:</span> We'd love for everyone to be fully present. Please avoid posting photos during the celebration or ahead of time—our photographers will take care of the memories.
-                </p>
-              </div>
-
-              {/* RSVP Contact */}
-              <div className="bg-gradient-to-br from-[#FBCCC9]/20 via-[#FFF7F6]/50 to-[#FFF7F6] rounded-xl p-5 sm:p-6 md:p-7 border border-[#C44569]/20">
-                <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] leading-relaxed">
-                  <span className="font-semibold">RSVP Contact:</span> Please reach out to {siteConfig.details.rsvp.names} (contact information to be updated)
-                </p>
-              </div>
+          <div className="space-y-5 sm:space-y-6">
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Invitation Only:</span> As we celebrate this moment with our closest loved ones, we kindly ask that attendance be limited to those named on the invitation.
+              </p>
             </div>
-
-            {/* Thank You Note */}
-            <div className="mt-7 sm:mt-8 md:mt-9 pt-6 sm:pt-7 md:pt-8 border-t border-[#C44569]/20">
-              <p className="text-sm sm:text-base md:text-lg font-[family-name:var(--font-crimson)] text-[#C44569] text-center leading-relaxed italic">
-                Thank you for your understanding and cooperation. We look forward to celebrating with you!
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Gift Policy:</span> We kindly ask for no boxed gifts. Monetary gifts are welcome but never expected.
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Adults-Only Event:</span> We love your little ones, but to keep the celebration intimate, we kindly request an adults-only event. (Children in our family and the entourage are the exception)
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Photo Policy:</span> We&apos;d love for everyone to be fully present. Please avoid posting photos during the celebration or ahead of time—our photographers will take care of the memories.
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>RSVP Contact:</span> Please reach out to {siteConfig.details.rsvp.contact} for any questions.
               </p>
             </div>
           </div>
+
+          <p
+            className={`${cormorant.className} text-center text-sm sm:text-base md:text-lg mt-8 sm:mt-10 italic leading-relaxed`}
+            style={{ color: "rgba(245, 230, 211, 0.9)" }}
+          >
+            Thank you for your understanding and cooperation. We look forward to celebrating with you!
+          </p>
         </div>
-      </div>
-    </Section>
+      </motion.div>
+    </section>
   )
 }

@@ -10,6 +10,7 @@ const DIRECTORIES = args.length > 0
       path.resolve(process.cwd(), "public", "images"),
       path.resolve(process.cwd(), "public", "desktop-background"),
       path.resolve(process.cwd(), "public", "mobile-background"),
+      path.resolve(process.cwd(), "public", "gallery"),
     ];
 
 const VALID_INPUT_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"]);

@@ -1,13 +1,18 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Section } from "@/components/section"
 import Image from "next/image"
 import { motion } from "motion/react"
 import { Cormorant_Garamond, Cinzel, Inter } from "next/font/google"
 import { bequta } from "@/app/fonts"
 import { siteConfig } from "@/content/site"
 import Counter from "@/components/Counter"
+
+// Gold accent - matches Welcome section transparent design
+const GOLD = {
+  main: "#E7D981",
+  rgba: (a: number) => `rgba(231, 217, 129, ${a})`,
+}
 
 interface TimeLeft {
   days: number
@@ -48,39 +53,43 @@ function CountdownUnit({ value, label }: CountdownUnitProps) {
 
   return (
     <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-      {/* Card container */}
       <div className="relative w-full max-w-[88px] sm:max-w-[96px] md:max-w-[110px] lg:max-w-[120px]">
-        {/* Main card */}
-        <div className="relative rounded-xl sm:rounded-2xl border border-[#C44569]/20 bg-white/40 backdrop-blur-sm px-2.5 py-2.5 sm:px-3.5 sm:py-3.5 md:px-4 md:py-4 shadow-lg shadow-[#FBCCC9]/20">
-          <div className="relative z-10 flex items-center justify-center text-[#C44569]">
+        <div
+          className="relative rounded-xl sm:rounded-2xl border backdrop-blur-sm px-2.5 py-2.5 sm:px-3.5 sm:py-3.5 md:px-4 md:py-4 shadow-lg"
+          style={{
+            borderColor: GOLD.rgba(0.35),
+            backgroundColor: GOLD.rgba(0.12),
+            boxShadow: `0 10px 25px rgba(0,0,0,0.15)`,
+          }}
+        >
+          <div className="relative z-10 flex items-center justify-center">
             <Counter
               value={value}
               places={places}
               fontSize={26}
               padding={4}
               gap={2}
-              textColor="#C44569"
+              textColor={GOLD.main}
               fontWeight={800}
               borderRadius={6}
               horizontalPadding={3}
               gradientHeight={0}
               gradientFrom="transparent"
               gradientTo="transparent"
-              counterStyle={{
-                backgroundColor: "transparent",
-              }}
+              counterStyle={{ backgroundColor: "transparent" }}
               digitStyle={{
                 minWidth: "1.15ch",
                 fontFamily: "Arial, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-                color: "#C44569",
+                color: GOLD.main,
               }}
             />
           </div>
         </div>
       </div>
-
-      {/* Label */}
-      <span className="text-[10px] sm:text-xs md:text-sm font-inter font-semibold uppercase tracking-[0.16em] text-[#C44569]/80 drop-shadow-none">
+      <span
+        className="text-[10px] sm:text-xs md:text-sm font-inter font-semibold uppercase tracking-[0.16em]"
+        style={{ color: GOLD.rgba(0.9) }}
+      >
         {label}
       </span>
     </div>
@@ -172,70 +181,67 @@ export function Countdown() {
     return () => clearInterval(timer)
   }, [targetTimestamp])
 
+  const goldFilter = "brightness(0) saturate(100%) invert(75%) sepia(30%) saturate(500%) hue-rotate(15deg) brightness(1.1) contrast(0.9)"
+
   return (
-    <Section
+    <section
       id="countdown"
-      className="relative py-10 sm:py-12 md:py-16 lg:py-20 overflow-hidden"
+      className="relative w-full pt-10 sm:pt-12 md:pt-16 lg:pt-20 pb-0 overflow-hidden px-0"
     >
-      {/* Background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[#FFF7F6]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#FBCCC9_0%,_transparent_40%)] opacity-70" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_#FBCCC9_0%,_transparent_40%)] opacity-70" />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03]" />
-      </div>
-      {/* Flower decoration - top left corner */}
-      <div className="absolute left-0 top-0 z-0 pointer-events-none">
-        <Image
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-y-[-1]"
-          priority={false}
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
+      {/* Main Card - glass effect, full width, no side margin */}
+      <div
+        className="relative w-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden rounded-none"
+        style={{
+          backgroundColor: GOLD.rgba(0.1),
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        {/* Double Border Frame */}
+        <div
+          className="absolute inset-3 md:inset-6 border pointer-events-none rounded-sm"
+          style={{ borderColor: GOLD.rgba(0.3) }}
         />
-      </div>
+        <div
+          className="absolute inset-4 md:inset-7 border-2 pointer-events-none rounded-sm"
+          style={{ borderColor: GOLD.rgba(0.5) }}
+        />
 
-      {/* Flower decoration - top right corner */}
-      <div className="absolute right-0 top-0 z-0 pointer-events-none">
-        <Image
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1] scale-y-[-1]"
-          priority={false}
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
+        {/* Corner decorations - same as Welcome */}
+        <div className="absolute top-0 left-0 z-10 opacity-80 pointer-events-none">
+          <img
+            src="/image/left-bottom-corner.png"
+            alt=""
+            className="w-auto h-auto max-w-[120px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] xl:max-w-[250px] object-contain scale-y-[-1]"
+            style={{ filter: goldFilter }}
+          />
+        </div>
+        <div className="absolute top-0 right-0 z-10 opacity-80 pointer-events-none">
+          <img
+            src="/image/left-bottom-corner.png"
+            alt=""
+            className="w-auto h-auto max-w-[120px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] xl:max-w-[250px] object-contain scale-x-[-1] scale-y-[-1]"
+            style={{ filter: goldFilter }}
+          />
+        </div>
+        <div className="absolute bottom-0 left-0 z-10 opacity-80 pointer-events-none">
+          <img
+            src="/image/left-bottom-corner.png"
+            alt=""
+            className="w-auto h-auto max-w-[120px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] xl:max-w-[250px] object-contain"
+            style={{ filter: goldFilter }}
+          />
+        </div>
+        <div className="absolute bottom-0 right-0 z-10 opacity-80 pointer-events-none">
+          <img
+            src="/image/left-bottom-corner.png"
+            alt=""
+            className="w-auto h-auto max-w-[120px] sm:max-w-[150px] md:max-w-[180px] lg:max-w-[220px] xl:max-w-[250px] object-contain scale-x-[-1]"
+            style={{ filter: goldFilter }}
+          />
+        </div>
 
-      {/* Flower decoration - left bottom corner */}
-      <div className="absolute left-0 bottom-0 z-0 pointer-events-none">
-        <Image
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60"
-          priority={false}
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-      
-      {/* Flower decoration - right bottom corner */}
-      <div className="absolute right-0 bottom-0 z-0 pointer-events-none">
-        <Image
-          src="/decoration/flower-decoration-left-bottom-corner2.png"
-          alt="Flower decoration"
-          width={300}
-          height={300}
-          className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px] lg:max-w-[280px] opacity-60 scale-x-[-1]"
-          priority={false}
-          style={{ filter: 'brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)' }}
-        />
-      </div>
-      
+        {/* Content wrapper */}
+        <div className="relative z-20">
       {/* Monogram - centered at top */}
       <div className="relative flex justify-center pt-8 sm:pt-10 md:pt-12 mb-6 sm:mb-8 md:mb-10 z-10">
         <motion.div
@@ -244,16 +250,13 @@ export function Countdown() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="relative"
         >
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] lg:w-[36rem] lg:h-[36rem] xl:w-[40rem] xl:h-[40rem] opacity-90">
+          <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 opacity-90">
             <Image
-              src="/monogram/monogram.png"
+              src="/monogram/monogram_couple.png"
               alt={`${groomNickname} & ${brideNickname} Monogram`}
               fill
-              className="object-contain drop-shadow-[0_4px_6px_rgba(196,69,105,0.1)]"
-              style={{
-                // Approximate filter to tint to #C44569
-                filter: "brightness(0) saturate(100%) invert(35%) sepia(34%) saturate(1637%) hue-rotate(309deg) brightness(91%) contrast(92%)",
-              }}
+              className="object-contain"
+              style={{ filter: goldFilter }}
               priority={false}
             />
           </div>
@@ -262,26 +265,21 @@ export function Countdown() {
 
       {/* Header */}
       <div className="relative z-10 text-center mb-6 sm:mb-8 md:mb-10 px-3 sm:px-4">
-        {/* Decorative element above title */}
         <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
-          <div className="w-8 sm:w-12 md:w-16 h-px bg-[#C44569]/25" />
-          <div className="w-1.5 h-1.5 bg-[#C44569] rounded-full" />
-          <div className="w-8 sm:w-12 md:w-16 h-px bg-[#C44569]/25" />
+          <div className="w-8 sm:w-12 md:w-16 h-px" style={{ backgroundColor: GOLD.rgba(0.4) }} />
+          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: GOLD.main }} />
+          <div className="w-8 sm:w-12 md:w-16 h-px" style={{ backgroundColor: GOLD.rgba(0.4) }} />
         </div>
-        
-        <h2 className={`${bequta.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal text-[#C44569] mb-2 sm:mb-3 md:mb-4 drop-shadow-sm`}>
+        <h2 className={`${bequta.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-2 sm:mb-3 md:mb-4 drop-shadow-sm`} style={{ color: GOLD.main }}>
           Counting down to our forever
         </h2>
-        
-        <p className="text-xs sm:text-sm md:text-base lg:text-lg text-[#C44569]/80 font-light max-w-xl mx-auto leading-relaxed px-2">
+        <p className="text-xs sm:text-sm md:text-base lg:text-lg font-light max-w-xl mx-auto leading-relaxed px-2" style={{ color: GOLD.rgba(0.9) }}>
           Every heartbeat brings us closer to the moment when two hearts become one. Join {groomNickname} and {brideNickname} as they count down to forever.
         </p>
-        
-        {/* Decorative element below subtitle */}
         <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
-          <div className="w-1 h-1 bg-[#C44569]/70 rounded-full" />
-          <div className="w-1 h-1 bg-[#C44569]/40 rounded-full" />
-          <div className="w-1 h-1 bg-[#C44569]/70 rounded-full" />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.7) }} />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.5) }} />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.7) }} />
         </div>
       </div>
 
@@ -306,63 +304,49 @@ export function Countdown() {
           
         </div>
         
-            {/* Date Section - Layout matched with hero date block */}
-            <div className="relative sm:rounded-3xl p-6 sm:p-8 md:p-10 mb-6 sm:mb-8">
+            {/* Date Section */}
+            <div className="relative p-6 sm:p-8 md:p-10 mb-6 sm:mb-8">
               <div className="w-full max-w-2xl mx-auto">
                 <div
-                  className={`${cinzel.className} flex flex-col items-center gap-1.5 sm:gap-2.5 md:gap-3 text-[#C44569] font-bold`}
+                  className={`${cinzel.className} flex flex-col items-center gap-1.5 sm:gap-2.5 md:gap-3 font-bold`}
+                  style={{ color: GOLD.main }}
                 >
-                  {/* Month */}
-                  <span
-                    className="text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#C44569]"
-                  >
+                  <span className="text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em]">
                     {ceremonyMonth}
                   </span>
-
-                  {/* Day and time row */}
                   <div className="flex w-full items-center gap-2 sm:gap-4 md:gap-5">
-                    {/* Day of week & divider */}
                     <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-2.5">
-                      <span className="h-[0.5px] flex-1 bg-[#C44569]/45" />
-                      <span
-                        className="text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#C44569]"
-                      >
+                      <span className="h-[0.5px] flex-1" style={{ backgroundColor: GOLD.rgba(0.5) }} />
+                      <span className="text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em]">
                         {ceremonyDayShort}
                       </span>
-                      <span className="h-[0.5px] w-6 sm:w-8 md:w-10 bg-[#C44569]/45" />
+                      <span className="h-[0.5px] w-6 sm:w-8 md:w-10" style={{ backgroundColor: GOLD.rgba(0.5) }} />
                     </div>
-
-                    {/* Day number */}
                     <div className="relative flex items-center justify-center px-3 sm:px-4 md:px-5">
                       <span
-                        className={`${inter.className} relative text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-black leading-none tracking-wider text-[#C44569]`}
+                        className={`${inter.className} relative text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem] font-black leading-none tracking-wider`}
+                        style={{ color: GOLD.main }}
                       >
                         {ceremonyDayNumber.padStart(2, "0")}
                       </span>
                     </div>
-
-                    {/* Time */}
                     <div className="flex flex-1 items-center gap-1.5 sm:gap-2.5">
-                      <span className="h-[0.5px] w-6 sm:w-8 md:w-10 bg-[#C44569]/45" />
-                      <span
-                        className="text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#C44569]"
-                      >
+                      <span className="h-[0.5px] w-6 sm:w-8 md:w-10" style={{ backgroundColor: GOLD.rgba(0.5) }} />
+                      <span className="text-[0.6rem] sm:text-[0.7rem] md:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em]">
                         {ceremonyTimeDisplay.split(",")[0]}
                       </span>
-                      <span className="h-[0.5px] flex-1 bg-[#C44569]/45" />
+                      <span className="h-[0.5px] flex-1" style={{ backgroundColor: GOLD.rgba(0.5) }} />
                     </div>
                   </div>
-
-                  {/* Year */}
-                  <span
-                    className="text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em] text-[#C44569]"
-                  >
+                  <span className="text-[0.65rem] sm:text-xs md:text-sm uppercase tracking-[0.4em] sm:tracking-[0.5em]">
                     {ceremonyYear}
                   </span>
                 </div>
               </div>
             </div>
+        </div>
       </div>
-    </Section>
+      </div>
+    </section>
   )
 }

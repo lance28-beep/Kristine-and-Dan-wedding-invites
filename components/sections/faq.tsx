@@ -7,6 +7,9 @@ import { Cormorant_Garamond } from "next/font/google"
 import { bequta } from "@/app/fonts"
 import { siteConfig } from "@/content/site"
 
+const NAVY = "#0C2650"
+const GOLD = "#E7D981"
+
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -120,18 +123,18 @@ export function FAQ() {
 
         {/* Simple divider */}
         <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
-          <div className="w-8 sm:w-12 md:w-16 h-px bg-white/60" />
-          <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
-          <div className="w-1.5 h-1.5 bg-white/60 rounded-full" />
-          <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
-          <div className="w-8 sm:w-12 md:w-16 h-px bg-white/60" />
+          <div className="w-8 sm:w-12 md:w-16 h-px bg-[#E7D981]/60" />
+          <div className="w-1.5 h-1.5 bg-[#E7D981]/80 rounded-full" />
+          <div className="w-1.5 h-1.5 bg-[#E7D981]/60 rounded-full" />
+          <div className="w-1.5 h-1.5 bg-[#E7D981]/80 rounded-full" />
+          <div className="w-8 sm:w-12 md:w-16 h-px bg-[#E7D981]/60" />
         </div>
       </div>
 
       {/* FAQ content */}
       <div className="relative z-30 max-w-4xl mx-auto px-3 sm:px-5">
         {/* Main card */}
-        <div className="relative bg-white backdrop-blur-md border border-[#800A06]/30 rounded-lg sm:rounded-xl md:rounded-2xl shadow-[0_20px_60px_rgba(128,10,6,0.18)] overflow-hidden">
+        <div className="relative bg-[#FAF7F2] backdrop-blur-md border border-[#0C2650]/20 rounded-lg sm:rounded-xl md:rounded-2xl shadow-xl overflow-hidden">
           
           {/* FAQ items */}
           <div className="relative p-2.5 sm:p-4 md:p-5 lg:p-6">
@@ -142,20 +145,21 @@ export function FAQ() {
                 return (
                   <div
                     key={index}
-                    className="rounded-lg sm:rounded-xl border border-[#800A06]/30 bg-white hover:border-[#800A06]/60 hover:bg-white transition-all duration-300 overflow-hidden shadow-sm"
+                    className="rounded-lg sm:rounded-xl border border-[#0C2650]/20 bg-white hover:border-[#0C2650]/40 transition-all duration-300 overflow-hidden shadow-sm"
                   >
                     <button
                       onClick={() => toggleItem(index)}
-                      className="group w-full px-2.5 sm:px-3 md:px-4 lg:px-5 py-2 sm:py-2.5 md:py-3 lg:py-4 flex items-center justify-between text-left outline-none focus-visible:ring-2 focus-visible:ring-[#606C60]/50 focus-visible:ring-offset-2 transition-colors"
+                      className="group w-full px-2.5 sm:px-3 md:px-4 lg:px-5 py-2 sm:py-2.5 md:py-3 lg:py-4 flex items-center justify-between text-left outline-none focus-visible:ring-2 focus-visible:ring-[#0C2650]/30 focus-visible:ring-offset-2 transition-colors"
                       aria-expanded={isOpen}
                       aria-controls={contentId}
                     >
-                      <span className={`${arialFont.className} font-normal text-[#800A06] pr-2 sm:pr-3 md:pr-4 text-xs sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-relaxed transition-colors duration-200 group-hover:text-[#671107]`} style={arialFont.style}>
+                      <span className={`${arialFont.className} font-normal pr-2 sm:pr-3 md:pr-4 text-xs sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-relaxed transition-colors duration-200`} style={{ ...arialFont.style, color: NAVY }}>
                         {item.question}
                       </span>
                       <ChevronDown
                         size={18}
-                        className={`text-[#800A06]/60 flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180 text-[#800A06]" : ""} w-4 h-4 sm:w-5 sm:h-5`}
+                        className={`flex-shrink-0 transition-transform duration-300 w-4 h-4 sm:w-5 sm:h-5 ${isOpen ? "rotate-180" : ""}`}
+                        style={{ color: NAVY }}
                         aria-hidden
                       />
                     </button>
@@ -168,13 +172,14 @@ export function FAQ() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="px-2.5 sm:px-3 md:px-4 lg:px-5 py-2 sm:py-2.5 md:py-3 lg:py-4 bg-white border-t border-[#800A06]/30">
+                        <div className="px-2.5 sm:px-3 md:px-4 lg:px-5 py-2 sm:py-2.5 md:py-3 lg:py-4 bg-[#FAF7F2]/80 border-t border-[#0C2650]/20">
                           {item.answer.includes("[RSVP_LINK]") ? (
-                            <p className={`${cormorant.className} text-[#800A06] font-medium leading-relaxed sm:leading-loose text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line tracking-wide`}>
+                            <p className={`${cormorant.className} font-medium leading-relaxed sm:leading-loose text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line tracking-wide`} style={{ color: NAVY }}>
                               {item.answer.split("[RSVP_LINK]")[0]}
                               <a 
                                 href="#guest-list" 
-                                className="text-[#800A06] underline font-bold hover:text-[#671107] transition-colors"
+                                className="underline font-bold hover:opacity-80 transition-opacity"
+                                style={{ color: NAVY }}
                                 onClick={(e) => {
                                   e.preventDefault()
                                   document.getElementById('guest-list')?.scrollIntoView({ behavior: 'smooth' })
@@ -188,34 +193,34 @@ export function FAQ() {
                             <div className="space-y-6 sm:space-y-8 pt-2">
                               {/* Principal Sponsor Attire */}
                               <div className="space-y-2 sm:space-y-3">
-                                <h4 className={`${cormorant.className} text-[#800A06] font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`}>Principal Sponsor Attire</h4>
-                                <div className={`${cormorant.className} text-[#800A06] text-xs sm:text-sm md:text-base space-y-1`}>
+                                <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Principal Sponsor Attire</h4>
+                                <div className={`${cormorant.className} text-xs sm:text-sm md:text-base space-y-1`} style={{ color: NAVY }}>
                                   <p><span className="font-semibold">Ninang:</span> Long Gown</p>
                                   <p><span className="font-semibold">Ninong:</span> Barong & Black Pants</p>
                                 </div>
                                 <div className="flex gap-2 sm:gap-3 mt-3">
                                   {['#CBA990', '#EBD3B9', '#F5E1C0'].map((color, i) => (
-                                    <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#800A06]/20 shadow-sm" style={{ backgroundColor: color }} />
+                                    <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#0C2650]/20 shadow-sm" style={{ backgroundColor: color }} />
                                   ))}
                                 </div>
                               </div>
 
                               {/* Guest Attire */}
                               <div className="space-y-2 sm:space-y-3">
-                                <h4 className={`${cormorant.className} text-[#800A06] font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`}>Guest Attire</h4>
-                                <div className={`${cormorant.className} text-[#800A06] text-xs sm:text-sm md:text-base space-y-1`}>
+                                <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Guest Attire</h4>
+                                <div className={`${cormorant.className} text-xs sm:text-sm md:text-base space-y-1`} style={{ color: NAVY }}>
                                   <p>Semi-Formal</p>
                                 </div>
                                 <div className="flex gap-2 sm:gap-3 mt-3">
                                   {['#CBA990', '#EBD3B9', '#F5E1C0'].map((color, i) => (
-                                    <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#800A06]/20 shadow-sm" style={{ backgroundColor: color }} />
+                                    <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#0C2650]/20 shadow-sm" style={{ backgroundColor: color }} />
                                   ))}
                                 </div>
                               </div>
                             </div>
 
                           ) : (
-                            <p className={`${cormorant.className} text-[#800A06] font-medium leading-relaxed sm:leading-loose text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line tracking-wide`}>
+                            <p className={`${cormorant.className} font-medium leading-relaxed sm:leading-loose text-xs sm:text-sm md:text-base lg:text-lg whitespace-pre-line tracking-wide`} style={{ color: NAVY }}>
                               {item.answer}
                             </p>
                           )}
