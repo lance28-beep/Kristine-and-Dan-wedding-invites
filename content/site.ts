@@ -16,8 +16,8 @@ export const siteConfig = {
   details: {
     rsvp: {
       deadline: "March 31",
-      contact: "Monique Ogalesco",
-      phone: "647-622-5353",
+      contact: "Kristine Lei Rivera",
+      phone: "to follow",
     },
   },
   ceremony: {
