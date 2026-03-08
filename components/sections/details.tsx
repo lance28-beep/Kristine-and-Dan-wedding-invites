@@ -561,11 +561,18 @@ export function Details() {
                   Guest Attire
                 </h3>
                 <p className={`${cormorant.className} text-sm sm:text-base leading-relaxed`} style={{ color: COLORS.warmIvory }}>
-                  <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Semi-Formal</span>
-                </p>
-                <p className={`${cormorant.className} text-xs sm:text-sm mt-3 opacity-90`} style={{ color: COLORS.warmIvory }}>
+                  <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Semi-formal or formal attire</span>{' '}
                   {siteConfig.dressCode.note}
                 </p>
+                <div className="flex gap-2 mt-4">
+                  {siteConfig.dressCode.guestColors?.map((color) => (
+                    <div
+                      key={color}
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2"
+                      style={{ backgroundColor: color, borderColor: COLORS.goldRgba(0.4) }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -627,6 +634,14 @@ export function Details() {
             >
               <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
                 <span className="font-semibold" style={{ color: COLORS.mutedGold }}>RSVP Contact:</span> Please reach out to {siteConfig.details.rsvp.contact} for any questions.
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-5 sm:p-6 border"
+              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
+            >
+              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
+                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Theme Song:</span> {siteConfig.dressCode.themeSong}
               </p>
             </div>
           </div>

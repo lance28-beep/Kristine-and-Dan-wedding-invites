@@ -195,11 +195,11 @@ export function FAQ() {
                               <div className="space-y-2 sm:space-y-3">
                                 <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Principal Sponsor Attire</h4>
                                 <div className={`${cormorant.className} text-xs sm:text-sm md:text-base space-y-1`} style={{ color: NAVY }}>
-                                  <p><span className="font-semibold">Ninang:</span> Long Gown</p>
-                                  <p><span className="font-semibold">Ninong:</span> Barong & Black Pants</p>
+                                  <p><span className="font-semibold">Ninang:</span> Long gowns in curated shades of champagne and beige</p>
+                                  <p><span className="font-semibold">Ninong:</span> Black suits</p>
                                 </div>
                                 <div className="flex gap-2 sm:gap-3 mt-3">
-                                  {['#CBA990', '#EBD3B9', '#F5E1C0'].map((color, i) => (
+                                  {['#F5E6D3', '#E6D5B8', '#D2B48C'].map((color, i) => (
                                     <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#0C2650]/20 shadow-sm" style={{ backgroundColor: color }} />
                                   ))}
                                 </div>
@@ -209,13 +209,21 @@ export function FAQ() {
                               <div className="space-y-2 sm:space-y-3">
                                 <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Guest Attire</h4>
                                 <div className={`${cormorant.className} text-xs sm:text-sm md:text-base space-y-1`} style={{ color: NAVY }}>
-                                  <p>Semi-Formal</p>
+                                  <p>Semi-formal or formal attire in gold, beige, champagne, navy or dark blue</p>
                                 </div>
                                 <div className="flex gap-2 sm:gap-3 mt-3">
-                                  {['#CBA990', '#EBD3B9', '#F5E1C0'].map((color, i) => (
+                                  {['#C6A85E', '#E6D5B8', '#F5E6D3', '#0C2650', '#072142'].map((color, i) => (
                                     <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#0C2650]/20 shadow-sm" style={{ backgroundColor: color }} />
                                   ))}
                                 </div>
+                              </div>
+
+                              {/* Theme Song */}
+                              <div className="space-y-2 sm:space-y-3">
+                                <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Theme Song</h4>
+                                <p className={`${cormorant.className} text-xs sm:text-sm md:text-base`} style={{ color: NAVY }}>
+                                  Love is by The Ridleys
+                                </p>
                               </div>
                             </div>
 

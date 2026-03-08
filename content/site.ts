@@ -39,16 +39,18 @@ export const siteConfig = {
   },
   dressCode: {
     theme: "Modern Filipiniana",
-    colors: ["#CBA990", "#EBD3B9", "#F5E1C0"],
+    colors: ["#F5E6D3", "#E6D5B8", "#D2B48C"], // champagne and beige for principal sponsors
+    guestColors: ["#C6A85E", "#E6D5B8", "#F5E6D3", "#0C2650", "#072142"], // gold, beige, champagne, navy, dark blue
     sponsors: {
-      male: "Barong & Black Pants",
-      female: "Long Gown"
+      male: "Black suits",
+      female: "Long gowns in curated shades of champagne and beige"
     },
     guests: {
-      gents: "Semi-Formal",
-      ladies: "Semi-Formal"
+      gents: "Semi-formal or formal attire",
+      ladies: "Semi-formal or formal attire"
     },
-    note: "We kindly request our guests to dress in semi-formal attire following our color palette."
+    note: "in gold, beige, champagne, navy or dark blue",
+    themeSong: "Love is by The Ridleys"
   },
   narratives: {
     ourStory: `God works in mysterious ways — sometimes He starts a story in the most ordinary moments. We had no idea that what began so simply would become the greatest adventure of our lives.`,

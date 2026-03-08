@@ -30,9 +30,9 @@ export function SnapShare() {
   const [copiedAllHashtags, setCopiedAllHashtags] = useState(false)
   const [copiedDriveLink, setCopiedDriveLink] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-
+??https://drive.google.com/drive/folders/1QkeY6ta6ff3-EpqocueEliUahA-Sec_Z?usp=sharing
   const websiteUrl = typeof window !== "undefined" ? window.location.href : "https://example.com"
-  const driveLink = "https://drive.google.com/drive/folders/1z42E4XdoDoxd1v2lJbFD4txEtkzgJRNH?usp=sharing"
+  const driveLink = "https://drive.google.com/drive/folders/1QkeY6ta6ff3-EpqocueEliUahA-Sec_Z?usp=sharing"
   const hashtags = [siteConfig.snapShare.hashtag]
   const allHashtagsText = hashtags.join(" ")
   const groomNickname = siteConfig.couple.groomNickname
