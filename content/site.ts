@@ -27,8 +27,8 @@ export const siteConfig = {
     date: "May 23, 2026",
     day: "Saturday",
     time: "2:00 PM",
-    entourageTime: "9:00 AM",
-    guestsTime: "9:30 AM",
+    entourageTime: "1:30 PM",
+    guestsTime: "1:30 PM",
   },
   reception: {
     location: "JR Hall, Diversion 21 Hotel",

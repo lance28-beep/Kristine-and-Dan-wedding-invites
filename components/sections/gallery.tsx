@@ -8,15 +8,9 @@ import { bequta } from "@/app/fonts"
 const GOLD = { main: "#E7D981", rgba: (a: number) => `rgba(231, 217, 129, ${a})` }
 
 const galleryItems = [
-  { image: "/mobile-background/couple (4).webp", text: " " },   
-  { image: "/mobile-background/couple (1).webp", text: " " },
-  { image: "/mobile-background/couple (5).webp", text: " " },
-  { image: "/mobile-background/couple (6).webp", text: " " },
-  { image: "/mobile-background/couple (7).webp", text: " " },
-  { image: "/mobile-background/couple (2).webp", text: " " },
-  { image: "/mobile-background/couple (3).webp", text: " " },
-  { image: "/mobile-background/couple (8).webp", text: " " },
-  { image: "/mobile-background/couple (9).webp", text: " " },
+  { image: "/new/gallery1.jpg", text: " " },   
+  { image: "/new/gallery3.jpg", text: " " },
+  { image: "/new/gallery2.jpg", text: " " },
 ]
 
 export function Gallery() {

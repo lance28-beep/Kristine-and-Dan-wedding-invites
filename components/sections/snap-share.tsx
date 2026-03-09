@@ -222,7 +222,7 @@ export function SnapShare() {
           </motion.div>
 
           <motion.div className="space-y-3 sm:space-y-5 lg:space-y-6 h-full flex flex-col lg:order-2" variants={fadeInUp}>
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <div className="bg-[#FAF7F2] rounded-xl sm:rounded-[22px] p-3 sm:p-5 md:p-8 shadow-xl text-center h-full flex flex-col border border-[#0C2650]/20">
                 <h4 className={`${bequta.className} text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3`} style={{ color: NAVY }}>
                   Share Our Wedding Website
@@ -255,9 +255,9 @@ export function SnapShare() {
                   Scan with any camera app to open the full invitation and schedule.
                 </p>
               </div>
-            </div>
+            </div> */}
 
-            <div className="bg-[#FAF7F2] rounded-lg sm:rounded-[20px] p-3 sm:p-5 md:p-7 shadow-xl border border-[#0C2650]/20">
+            {/* <div className="bg-[#FAF7F2] rounded-lg sm:rounded-[20px] p-3 sm:p-5 md:p-7 shadow-xl border border-[#0C2650]/20">
               <h5 className={`${bequta.className} text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3 text-center`} style={{ color: NAVY }}>
                 Use Our Hashtags
               </h5>
@@ -320,9 +320,9 @@ export function SnapShare() {
                   </>
                 )}
               </button>
-            </div>
+            </div> */}
 
-            <div className="bg-[#FAF7F2] rounded-lg sm:rounded-[20px] p-3 sm:p-5 md:p-7 shadow-xl border border-[#0C2650]/20">
+            {/* <div className="bg-[#FAF7F2] rounded-lg sm:rounded-[20px] p-3 sm:p-5 md:p-7 shadow-xl border border-[#0C2650]/20">
               <h5 className={`${bequta.className} text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3 text-center`} style={{ color: NAVY }}>
                 Share on Social Media
               </h5>
@@ -363,7 +363,7 @@ export function SnapShare() {
                   <span className={`${cormorant.className} font-medium text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em]`}>Twitter</span>
                 </button>
               </div>
-            </div>
+            </div> */}
 
             {driveLink && (
               <div>

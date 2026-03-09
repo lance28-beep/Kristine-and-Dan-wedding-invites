@@ -271,10 +271,10 @@ export function Countdown() {
           <div className="w-8 sm:w-12 md:w-16 h-px" style={{ backgroundColor: GOLD.rgba(0.4) }} />
         </div>
         <h2 className={`${bequta.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-2 sm:mb-3 md:mb-4 drop-shadow-sm`} style={{ color: GOLD.main }}>
-          Counting down to our forever
+        Counting Down to Forever
         </h2>
         <p className="text-xs sm:text-sm md:text-base lg:text-lg font-light max-w-xl mx-auto leading-relaxed px-2" style={{ color: GOLD.rgba(0.9) }}>
-          Every heartbeat brings us closer to the moment when two hearts become one. Join {groomNickname} and {brideNickname} as they count down to forever.
+        Join `{groomNickname}` and `{brideNickname}` as they count down to forever.
         </p>
         <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
           <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.7) }} />

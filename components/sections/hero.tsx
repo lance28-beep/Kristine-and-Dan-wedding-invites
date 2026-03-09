@@ -485,9 +485,14 @@ export function Hero() {
 
       <div className="relative z-10 w-full container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 flex flex-col items-center justify-center min-h-screen pt-20 sm:pt-24 md:pt-28 pb-10 sm:pb-12 md:pb-16">
         <div
-          className={`w-full max-w-3xl text-center space-y-3 sm:space-y-4 md:space-y-5 transition-all duration-1000 ease-out ${
+          className={`w-full max-w-3xl text-center space-y-3 sm:space-y-4 md:space-y-5 transition-all duration-1000 ease-out rounded-2xl sm:rounded-3xl border px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-10 backdrop-blur-md ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
+          style={{
+            backgroundColor: "rgba(7, 33, 66, 0.80)", // deep navy overlay behind all hero text
+            borderColor: "rgba(245, 230, 211, 0.22)", // soft champagne border
+            boxShadow: "0 24px 80px rgba(0, 0, 0, 0.65)",
+          }}
         >
           {/* Main Invitation Text */}
           <div className="space-y-2 sm:space-y-3 md:space-y-4">

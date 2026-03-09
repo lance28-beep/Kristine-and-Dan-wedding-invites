@@ -34,7 +34,7 @@ const MAIN_HOTELS = [
     name: "Richmonde Hotel Iloilo",
     label: "Prep Hotel",
     travelToChapel: "20 minutes drive to the chapel",
-    travelToReception: null,
+    travelToReception: "11 minutes drive to the reception venue",
     image: "/detailsSection/Richmonde Hotel Iloilo.png",
   },
   {
@@ -64,13 +64,48 @@ const ADDITIONAL_HOTELS = [
 
 // Restaurants & Cafés
 const RESTAURANTS = [
-  { name: "Dayneto's Seafood and Grill restaurant", image: "/detailsSection/Dayneto’s Seafood and Grill restaurant.png" },
-  { name: "Urban Table", image: "/detailsSection/Urban Table .png" },
-  { name: "Alicia’s Batchoy", image: "/detailsSection/Alicia’s Batchoy.png" },
-  { name: "Monkey Grounds", image: "/detailsSection/Monkey Grounds.png" },
-  { name: "Clinic Coffee", image: "/detailsSection/Clinic Coffee.png" },
-  { name: "Neighbor Coffee", image: "/detailsSection/Neighbor Coffee.png" },
-  { name: "Happy Endings Creamery", image: "/detailsSection/Happy endings creamery.png" },
+  {
+    name: "Dayneto's Seafood and Grill restaurant",
+    label: "Seafood & Grill",
+    description: "Casual seaside-inspired spot for fresh seafood and Filipino favorites.",
+    image: "/detailsSection/Dayneto’s Seafood and Grill restaurant.png",
+  },
+  {
+    name: "Urban Table",
+    label: "Restaurant",
+    description: "Modern comfort food and sharing plates in a cozy setting.",
+    image: "/detailsSection/Urban Table .png",
+  },
+  {
+    name: "Alicia’s Batchoy",
+    label: "Local Favorite",
+    description: "Classic Iloilo batchoy and hearty bowls for an authentic local experience.",
+    image: "/detailsSection/Alicia’s Batchoy.png",
+  },
+  {
+    name: "Monkey Grounds",
+    label: "Café",
+    description: "Charming café for coffee, light bites, and relaxed conversations.",
+    image: "/detailsSection/Monkey Grounds.png",
+  },
+  {
+    name: "Clinic Coffee",
+    label: "Coffee Shop",
+    description: "Specialty coffee and minimalist interiors, perfect for a quiet pause.",
+    image: "/detailsSection/Clinic Coffee.png",
+  },
+  {
+    name: "Neighbor Coffee",
+    label: "Neighborhood Café",
+    description: "Warm, neighborhood-style café with espresso drinks and pastries.",
+    image: "/detailsSection/Neighbor Coffee.png",
+  },
+  {
+    name: "Happy Endings Creamery",
+    label: "Dessert",
+    description: "Artisanal ice cream and sweet treats to end the day on a high note.",
+    image: "/detailsSection/Happy endings creamery.png",
+  },
 ]
 
 // Places to explore
@@ -342,9 +377,19 @@ export function Details() {
                   </div>
                 </div>
                 <div className="p-4 sm:p-5 md:p-6">
-                  <div className="flex items-center gap-2 text-sm">
-                    <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
-                    <p className={`${cormorant.className} text-white/90`}>{hotel.travelToChapel}</p>
+                  <div className="space-y-1.5">
+                    {hotel.travelToChapel && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
+                        <p className={`${cormorant.className} text-white/90`}>{hotel.travelToChapel}</p>
+                      </div>
+                    )}
+                    {hotel.travelToReception && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
+                        <p className={`${cormorant.className} text-white/85`}>{hotel.travelToReception}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -384,8 +429,20 @@ export function Details() {
                   </h3>
                 </div>
                 <div className="p-4 sm:p-5 space-y-1">
-                  <p className={`${cormorant.className} text-sm text-white/90`}>{hotel.travelToChapel}</p>
-                  <p className={`${cormorant.className} text-sm text-white/80`}>{hotel.travelToReception}</p>
+                  <div className="space-y-1.5">
+                    {hotel.travelToChapel && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
+                        <p className={`${cormorant.className} text-white/90`}>{hotel.travelToChapel}</p>
+                      </div>
+                    )}
+                    {hotel.travelToReception && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: COLORS.mutedGold }} />
+                        <p className={`${cormorant.className} text-white/85`}>{hotel.travelToReception}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -448,13 +505,27 @@ export function Details() {
                     className="object-cover transition-transform duration-600 group-hover:scale-110"
                     sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                  <div className="absolute inset-0 flex items-end p-3 sm:p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 space-y-1 transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                    {item.label && (
+                      <span
+                        className={`${inter.className} text-[10px] sm:text-xs tracking-[0.18em] uppercase text-white/80`}
+                      >
+                        {item.label}
+                      </span>
+                    )}
                     <p
-                      className={`${cormorant.className} text-sm sm:text-base font-medium text-white transform translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300`}
+                      className={`${cormorant.className} text-sm sm:text-base font-medium text-white`}
                     >
                       {item.name}
                     </p>
+                    {item.description && (
+                      <p
+                        className={`${inter.className} text-[10px] sm:text-xs text-white/85 leading-snug`}
+                      >
+                        {item.description}
+                      </p>
+                    )}
                   </div>
                 </motion.div>
               ))}

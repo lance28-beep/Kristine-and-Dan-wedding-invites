@@ -36,7 +36,7 @@ const faqItems: FAQItem[] = [
   {
     question: "When is the wedding?",
     answer:
-      `Our wedding will be held on ${siteConfig.ceremony.date} (${siteConfig.ceremony.day}) at ${siteConfig.ceremony.time}. We kindly ask guests to arrive by ${siteConfig.ceremony.guestsTime} to help us begin promptly.`,
+      `Our wedding will be held on ${siteConfig.ceremony.date} (${siteConfig.ceremony.day}) at 1:30pm. We kindly ask guests to arrive by 1:30 PM to help us begin promptly.`,
   },
   {
     question: "Where will the ceremony and reception take place?",
@@ -216,14 +216,6 @@ export function FAQ() {
                                     <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#0C2650]/20 shadow-sm" style={{ backgroundColor: color }} />
                                   ))}
                                 </div>
-                              </div>
-
-                              {/* Theme Song */}
-                              <div className="space-y-2 sm:space-y-3">
-                                <h4 className={`${cormorant.className} font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest`} style={{ color: NAVY }}>Theme Song</h4>
-                                <p className={`${cormorant.className} text-xs sm:text-sm md:text-base`} style={{ color: NAVY }}>
-                                  Love is by The Ridleys
-                                </p>
                               </div>
                             </div>
 

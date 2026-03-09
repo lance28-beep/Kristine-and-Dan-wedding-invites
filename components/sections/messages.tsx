@@ -140,7 +140,7 @@ function MessageForm({ onSuccess, onMessageSent }: MessageFormProps) {
               </div>
             </div>
             <h3 className={`${bequta.className} text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-2`} style={{ color: GOLD.main }}>
-              Share Your Love
+            Love Notes & Prayers
             </h3>
             <p className={`${cormorant.className} text-[10px] sm:text-xs md:text-sm`} style={{ color: GOLD.rgba(0.85) }}>
               Your words will be part of {coupleDisplayName}&apos;s keepsake for years to come.
