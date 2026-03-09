@@ -274,7 +274,7 @@ export function Countdown() {
         Counting Down to Forever
         </h2>
         <p className="text-xs sm:text-sm md:text-base lg:text-lg font-light max-w-xl mx-auto leading-relaxed px-2" style={{ color: GOLD.rgba(0.9) }}>
-        Join `{groomNickname}` and `{brideNickname}` as they count down to forever.
+        Every heartbeat brings us closer to the moment when two hearts become one. 
         </p>
         <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">
           <div className="w-1 h-1 rounded-full" style={{ backgroundColor: GOLD.rgba(0.7) }} />
