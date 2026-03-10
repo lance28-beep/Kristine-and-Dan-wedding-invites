@@ -32,7 +32,7 @@ export function Registry() {
         </h2>
 
         <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90 font-light max-w-2xl mx-auto leading-relaxed px-2">
-        With all that we have, we are truly blessed. Your presence and prayer are what we request. But if you desire to give nonetheless, a small envelope for our future is one we can suggest
+        Your presence and prayer are what we request. But if you desire to give nonetheless, a small envelope for our future is one we can suggest
         </p>
 
         <div className="flex items-center justify-center gap-2 mt-3 sm:mt-4">

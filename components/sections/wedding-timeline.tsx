@@ -57,6 +57,14 @@ const timelineEvents: TimelineEvent[] = [
     imageSrc: "/weddingtimeline/CockTailHour.png",
   },
   {
+    time: "6:00 PM",
+    title: "Reception Welcome",
+    description: "Welcome guests to the reception.",
+    location: receptionVenue,
+    icon: GuestsIcon,
+    imageSrc: "/weddingtimeline/reception welcom.png",
+  },
+  {
     time: "7:00 PM",
     title: "Dinner",
     description: "Share a relaxed meal together as we continue the celebration.",
@@ -70,7 +78,7 @@ const timelineEvents: TimelineEvent[] = [
     description: `Celebrate with ${groomNickname} & ${brideNickname} as the evening festivities begin.`,
     location: receptionVenue,
     icon: FireworksIcon,
-    imageSrc: "/weddingtimeline/reception welcom.png",
+    imageSrc: "/weddingtimeline/dance.png",
   },
   {
     time: "9:00 PM",

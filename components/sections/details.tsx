@@ -707,14 +707,7 @@ export function Details() {
                 <span className="font-semibold" style={{ color: COLORS.mutedGold }}>RSVP Contact:</span> Please reach out to {siteConfig.details.rsvp.contact} for any questions.
               </p>
             </div>
-            <div
-              className="rounded-xl p-5 sm:p-6 border"
-              style={{ backgroundColor: "rgba(250, 247, 242, 0.05)", borderColor: COLORS.goldRgba(0.2) }}
-            >
-              <p className={`${cormorant.className} text-sm sm:text-base md:text-lg leading-relaxed`} style={{ color: COLORS.warmIvory }}>
-                <span className="font-semibold" style={{ color: COLORS.mutedGold }}>Theme Song:</span> {siteConfig.dressCode.themeSong}
-              </p>
-            </div>
+
           </div>
 
           <p
