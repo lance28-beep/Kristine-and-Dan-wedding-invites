@@ -425,7 +425,7 @@ export function GuestList() {
           Please search for your name below to confirm your presence at our special day
         </p>
         <p className={`${cormorant.className} text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold max-w-xl mx-auto leading-relaxed px-2 mb-2 sm:mb-3`}>
-          RSVP Deadline: {siteConfig.details.rsvp.deadline}
+          RSVP Deadline: April 18, 2026
         </p>
         
         {/* Decorative element below subtitle */}
